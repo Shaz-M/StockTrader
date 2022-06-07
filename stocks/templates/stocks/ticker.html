@@ -10,6 +10,13 @@
 <body>
     <h1 id='ticker'>{{ ticker }}</h1>
     <p id='price'></p>
+    {% if request.user.is_authenticated %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ OrderForm.as_p }}
+        <input type="submit" value="Submit">
+    </form>
+    {% endif %}
     <script>
         function fetchdata(ticker){
         $.ajax({
