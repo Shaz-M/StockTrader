@@ -1,0 +1,21 @@
+.tradingview-widget-container {
+  height: 500px !important;
+}
+
+#fullName {
+  text-decoration: underline;
+  text-decoration-color: white;
+  text-underline-position: under;
+  margin-top: 0;
+}
+
+.nameDiv {
+  float: left;
+  padding-left: 10px;
+}
+
+.priceDiv {
+  float: right;
+  padding-right: 10px;
+  text-align: right;
+}

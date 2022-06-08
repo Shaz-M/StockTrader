@@ -2,13 +2,11 @@ from urllib import response
 from wsgiref.util import request_uri
 from xml.sax.handler import property_dom_node
 from django.shortcuts import render
-from portfolio.forms import TickerForm
 from portfolio.models import Portfolio
 from .models import Stock
 from .forms import OrderForm
 from django.shortcuts import redirect
-from .utils import getPrice,validateTicker,validateBuy,validateSell
-import requests
+from .utils import getPrice, stockInfo,validateTicker,validateBuy,validateSell,getCompanyName
 
 # Create your views here.
 
@@ -56,6 +54,9 @@ def ticker(request,tid):
                 portfolio.save()
 
     form = OrderForm()
-    context = {'ticker':tid,'OrderForm':form}
+    stockObj = stockInfo()
+    stockObj.ticker = tid
+    stockObj.fullName = getCompanyName(tid)
+    context = {'stockObj':stockObj,'OrderForm':form}
     return render(request,'stocks/ticker.html',context)
 

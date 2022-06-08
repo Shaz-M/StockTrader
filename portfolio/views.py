@@ -1,20 +1,32 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .forms import TickerForm
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
+from .models import Portfolio
+from stocks.utils import validateTicker
+
 
 # Create your views here.
 
 
-def dashboard(request):
-    if(request.method == 'POST'):
-        form = TickerForm(request.POST)
-        if form.is_valid():
-            ticker = request.POST['ticker']
-            return HttpResponseRedirect('stocks/'+ticker)
-    else:
-        form = TickerForm();    
-    context = {'form':form}
+def dashboard(request):   
+    context = {'title':'Dashboard'}
     return render(request,'portfolio/dashboard.html',context)
 
+
 def positions(request):
-    return render(request,'portfolio/positions.html')
+    user = request.user   
+    portfolio = Portfolio.objects.get(user=user)
+    stocks = portfolio.stock_set.all()
+    context = {'stocks':stocks}
+    return render(request,'portfolio/positions.html',context)
+
+def navsearch(request):
+        if 'q' in request.GET and request.GET['q']:
+            q = request.GET['q']
+            if not validateTicker(q):
+                return HttpResponseRedirect('/dashboard')
+            else:
+                return redirect('stocks/'+q)
+                
+        else:
+            return HttpResponseRedirect('/dashboard')

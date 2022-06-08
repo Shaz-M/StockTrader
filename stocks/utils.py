@@ -1,3 +1,4 @@
+from contextlib import nullcontext
 import requests
 from decimal import Decimal
 
@@ -29,3 +30,12 @@ def validateSell(ticker,price,quantity,portfolio):
     if(stockObj.numShares < quantity):
         return False
     return True
+
+class stockInfo:
+    ticker = None
+    fullName = None
+
+def getCompanyName(ticker):
+    response = getJson(ticker)
+    name = response[ticker].get('description')
+    return name.split('-')[0]
