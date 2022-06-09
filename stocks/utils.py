@@ -2,6 +2,7 @@ from contextlib import nullcontext
 import requests
 from decimal import Decimal
 
+
 def getJson(ticker):
     url = 'https://api.tdameritrade.com/v1/marketdata/'+ticker+'/quotes?apikey=D57TGYGPEEXE5IQRTHZG4EVDBATABE3B'
     response = requests.get(url)
@@ -34,8 +35,16 @@ def validateSell(ticker,price,quantity,portfolio):
 class stockInfo:
     ticker = None
     fullName = None
+    prevClose = None
 
-def getCompanyName(ticker):
-    response = getJson(ticker)
-    name = response[ticker].get('description')
-    return name.split('-')[0]
+
+
+
+
+def getStockObj(ticker):
+    response  = getJson(ticker)
+    obj = stockInfo()
+    obj.fullName = response[ticker].get('description')
+    obj.ticker = ticker
+    obj.prevClose = response[ticker].get('closePrice')
+    return obj

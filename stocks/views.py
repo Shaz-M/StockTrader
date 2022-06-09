@@ -6,7 +6,7 @@ from portfolio.models import Portfolio
 from .models import Stock
 from .forms import OrderForm
 from django.shortcuts import redirect
-from .utils import getPrice, stockInfo,validateTicker,validateBuy,validateSell,getCompanyName
+from .utils import getPrice,validateTicker,validateBuy,validateSell,getStockObj
 
 # Create your views here.
 
@@ -54,9 +54,7 @@ def ticker(request,tid):
                 portfolio.save()
 
     form = OrderForm()
-    stockObj = stockInfo()
-    stockObj.ticker = tid
-    stockObj.fullName = getCompanyName(tid)
+    stockObj = getStockObj(tid);
     context = {'stockObj':stockObj,'OrderForm':form}
     return render(request,'stocks/ticker.html',context)
 

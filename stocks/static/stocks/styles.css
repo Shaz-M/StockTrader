@@ -1,11 +1,9 @@
 .tradingview-widget-container {
   height: 500px !important;
+  margin-bottom: 75.19px;
 }
 
 #fullName {
-  text-decoration: underline;
-  text-decoration-color: white;
-  text-underline-position: under;
   margin-top: 0;
 }
 
@@ -18,4 +16,77 @@
   float: right;
   padding-right: 10px;
   text-align: right;
+}
+
+.nav-item {
+  width: 50%;
+}
+
+#myTab {
+  color: white;
+}
+
+#fundamental-tab {
+  color: white;
+  text-align: center;
+  border-color: white;
+}
+
+#price-tab {
+  color: white;
+  text-align: center;
+  border-color: white;
+}
+
+.nav-tabs .nav-item .nav-link.active {
+  background-color: #3c4753;
+}
+
+.nav-tabs .nav-item .nav-link {
+  color: #fff;
+}
+
+hr {
+  border: none;
+  height: 1px;
+  /* Set the hr color */
+  background-color: rgba(255, 255, 255, 0.65); /* Modern Browsers */
+}
+
+.parent {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.child {
+  flex: 1 0 21%; /* explanation below */
+  margin: 15px;
+  height: 40px;
+  min-width: 200px;
+  border-radius: 5px;
+  background-color: #3c4753;
+  border-style: solid;
+  border-width: thin;
+  border-color: white;
+}
+
+.label {
+  display: inline-block;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 100%;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 40px;
+  background-color: white;
+  color: black;
+  font-size: smaller;
+  font-weight: 0;
+}
+
+.info-tab-section {
+  display: inline-block;
+  padding-left: 10px;
+  font-size: 15px;
+  font-weight: 0;
 }

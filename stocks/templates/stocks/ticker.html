@@ -3,14 +3,16 @@
 
 {% endblock css %} {% block content %}
 
-<div class="container mt-5">
-  <div class="nameDiv">
-    <h1 class="mb-0" id="ticker">{{ stockObj.ticker }}</h1>
-    <h6 id="fullName">{{ stockObj.fullName }}</h6>
-  </div>
-  <div class="priceDiv">
-    <h2 id="price"></h2>
-    <h6 id="change"></h6>
+<div id="mainDisplay" class="container mt-5">
+  <div>
+    <div class="nameDiv">
+      <h1 class="mb-0" id="ticker">{{ stockObj.ticker }}</h1>
+      <h6 id="fullName">{{ stockObj.fullName }}</h6>
+    </div>
+    <div class="priceDiv">
+      <h2 id="price"></h2>
+      <h6 id="change"></h6>
+    </div>
   </div>
   <!-- TradingView Widget BEGIN -->
   <div class="tradingview-widget-container">
@@ -48,12 +50,101 @@
     </script>
   </div>
   <!-- TradingView Widget END -->
+  <div class="pt-2">
+    <hr class="line-break" />
+  </div>
+  <div class="infoDiv pt-2">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item">
+        <a
+          class="nav-link active"
+          id="price-tab"
+          data-toggle="tab"
+          href="#priceInfo"
+          role="tab"
+          aria-controls="home"
+          aria-selected="true"
+          >Price Information</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          id="fundamental-tab"
+          data-toggle="tab"
+          href="#fundamentalInfo"
+          role="tab"
+          aria-controls="profile"
+          aria-selected="false"
+          >Company Fundamentals</a
+        >
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div
+        class="tab-pane fade show active"
+        id="priceInfo"
+        role="tabpanel"
+        aria-labelledby="home-tab"
+      >
+        <div class="pt-2 pb-2">
+          <div class="parent">
+            <div class="child">
+              <div class="label">Prev Close Price</div>
+              <div class="info-tab-section" id="prevClose">
+                ${{stockObj.prevClose}}
+              </div>
+            </div>
+            <div class="child">
+              <div class="label">Bid Price</div>
+              <div class="info-tab-section" id="bidPrice"></div>
+            </div>
+            <div class="child">
+              <div class="label">Ask Price</div>
+              <div class="info-tab-section" id="askPrice"></div>
+            </div>
+            <div class="child">
+              <div class="label">Avg Volume</div>
+              <div class="info-tab-section" id="avgVolume"></div>
+            </div>
+            <div class="child">
+              <div class="label">High</div>
+              <div class="info-tab-section" id="high"></div>
+            </div>
+            <div class="child">
+              <div class="label">Low</div>
+              <div class="info-tab-section" id="low"></div>
+            </div>
+            <div class="child">
+              <div class="label">52 Week Low</div>
+              <div class="info-tab-section" id="52low"></div>
+            </div>
+            <div class="child">
+              <div class="label">52 Week High</div>
+              <div class="info-tab-section" id="52high"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="tab-pane fade"
+        id="fundamentalInfo"
+        role="tabpanel"
+        aria-labelledby="profile-tab"
+      >
+        ...
+      </div>
+    </div>
+  </div>
 </div>
-{% if request.user.is_authenticated %}
-<form action="" method="POST">
-  {% csrf_token %} {{ OrderForm.as_p }}
-  <input type="submit" value="Submit" />
-</form>
-{% endif %}
+<div>
+  {% if request.user.is_authenticated %}
+  <form action="" method="POST">
+    {% csrf_token %} {{ OrderForm.as_p }}
+    <input type="submit" value="Submit" />
+  </form>
+  {% endif %}
+</div>
+
 <script src="{% static 'stocks/main.js' %}"></script>
 {% endblock content %}
