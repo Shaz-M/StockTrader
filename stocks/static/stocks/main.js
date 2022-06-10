@@ -37,15 +37,15 @@ function fetchdata(ticker){
             $("#change").text(string);
             $(".priceDiv").css("color","white");
         }
-        $("#price").text('$'+price);
+        $(".currPrice").each(function(){
+            $(this).text("$"+price);
+        });
         $("#bidPrice").text("$"+bidPrice);
         $("#askPrice").text("$"+askPrice);
         $("#low").text("$"+low);
         $("#high").text("$"+high);
         $("#52low").text("$"+low52);
         $("#52high").text("$"+high52);
-
-
     },
     complete:function(data){
         setTimeout(fetchdata,5000,ticker);

@@ -10,7 +10,7 @@
       <h6 id="fullName">{{ stockObj.fullName }}</h6>
     </div>
     <div class="priceDiv">
-      <h2 id="price"></h2>
+      <h2 id="price" class="currPrice"></h2>
       <h6 id="change"></h6>
     </div>
   </div>
@@ -50,6 +50,75 @@
     </script>
   </div>
   <!-- TradingView Widget END -->
+  {% if request.user.is_authenticated %}
+  <!-- Buy/Sell -->
+  <div class="infoDiv pt-2">
+    <ul class="nav nav-tabs" id="buy/sell" role="tablist">
+      <li class="nav-item">
+        <a
+          class="nav-link buy"
+          id="buy-tab"
+          data-toggle="tab"
+          href="#buypanel"
+          role="tab"
+          aria-controls="home"
+          aria-selected="true"
+          >Buy</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link sell"
+          id="sell-tab"
+          data-toggle="tab"
+          href="#sellpanel"
+          role="tab"
+          aria-controls="profile"
+          aria-selected="false"
+          >Sell</a
+        >
+      </li>
+    </ul>
+    <div class="tab-content" id="buysell-tab">
+      <div
+        class="tab-pane fade"
+        id="buypanel"
+        role="tabpanel"
+        aria-labelledby="home-tab"
+      >
+        <div>
+          Order Type: Market Order<br />
+          Trade Price: <span class="currPrice"></span><br />
+          <form id="buy-form" method="POST" action="">
+            {% csrf_token %}
+            <label for="quantity">Quantity:</label>
+            <input type="number" min="0" id="quantity" name="quantity" /><br />
+            <input type="hidden" name="orderType" value="Buy" />
+            <button type="submit">Submit Order</button>
+          </form>
+        </div>
+      </div>
+      <div
+        class="tab-pane fade"
+        id="sellpanel"
+        role="tabpanel"
+        aria-labelledby="profile-tab"
+      >
+        Order Type: Market Order<br />
+        Trade Price: <span class="currPrice"></span><br />
+        <form id="sell-form" method="POST" action="">
+          {% csrf_token %}
+          <label for="quantity">Quantity:</label>
+          <input type="number" min="0" id="quantity" name="quantity" /><br />
+          <input type="hidden" name="orderType" value="Sell" />
+          <button type="submit">Submit Order</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Buy/Sell END -->
+  {% endif %}
   <div class="pt-2">
     <hr class="line-break" />
   </div>
@@ -146,14 +215,6 @@
     <h3>Company Bio</h3>
     <span id="description">{{stockObj.description}}</span>
   </div>
-</div>
-<div>
-  {% if request.user.is_authenticated %}
-  <form action="" method="POST">
-    {% csrf_token %} {{ OrderForm.as_p }}
-    <input type="submit" value="Submit" />
-  </form>
-  {% endif %}
 </div>
 
 <script src="{% static 'stocks/main.js' %}"></script>

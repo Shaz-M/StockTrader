@@ -45,6 +45,8 @@
 
 .nav-tabs .nav-item .nav-link {
   color: #fff;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
 hr {
@@ -95,4 +97,32 @@ hr {
 #description {
   font-size: 0.85rem !important;
   font-weight: 100 !important;
+}
+
+.buy {
+  background-color: rgba(8, 153, 129, 1) !important;
+  border-radius: 5px !important;
+  border-color: white;
+}
+
+.sell {
+  background-color: #f1272e !important;
+  border-radius: 5px !important;
+  border-color: white;
+}
+.nav-tabs {
+  border-bottom: none;
+}
+
+.nav-item {
+  text-align: center;
+}
+
+#quantity {
+  width: 100px;
+  height: 25px;
+}
+
+#buysell-tab {
+  border: thin;
 }
