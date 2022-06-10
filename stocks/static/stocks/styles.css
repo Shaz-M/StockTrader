@@ -126,3 +126,13 @@ hr {
 #buysell-tab {
   border: thin;
 }
+
+.spaceBetween {
+  display: flex;
+  justify-content: space-between;
+}
+
+.positionInfo {
+  font-size: 0.85rem !important;
+  font-weight: 100 !important;
+}

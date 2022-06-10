@@ -118,6 +118,34 @@
   </div>
 
   <!-- Buy/Sell END -->
+  <div class="pt-2">
+    <hr class="line-break" />
+  </div>
+  <!-- Postions -->
+  <h4>Your Position</h4>
+  <div class="spaceBetween">
+    <div>
+      Shares<br />
+      <span class="positionInfo" id="shares">{{ stockObj.shares }}</span>
+    </div>
+    <div>
+      Average Price<br />
+      <span class="positionInfo" id="avgPrice">{{ stockObj.avgBuyPrice }}</span>
+    </div>
+    <div>
+      Net liq.<br />
+      <span class="positionInfo" id="netLiq"></span>
+    </div>
+    <div>
+      P/L Open<br />
+      <span class="positionInfo" id="plOpen"></span>
+    </div>
+    <div>
+      P/L Day<br />
+      <span class="positionInfo" id="plDay"></span>
+    </div>
+  </div>
+  <!-- Postions END -->
   {% endif %}
   <div class="pt-2">
     <hr class="line-break" />
@@ -173,7 +201,7 @@
               <div class="info-tab-section" id="askPrice"></div>
             </div>
             <div class="child">
-              <div class="label">Volume</div>
+              <div class="label">Avg Volume</div>
               <div class="info-tab-section" id="avgVolume">
                 {{stockObj.volume}}
               </div>
@@ -212,7 +240,7 @@
   </div>
 
   <div>
-    <h3>Company Bio</h3>
+    <h4>Company Bio</h4>
     <span id="description">{{stockObj.description}}</span>
   </div>
 </div>

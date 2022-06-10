@@ -11,10 +11,10 @@ from .utils import getPrice,validateTicker,validateBuy,validateSell,getStockObj
 
 def ticker(request,tid):
     tid = tid.upper()
+    user = request.user
     if not validateTicker(tid):
         return redirect('dashboard')
     if(request.method == 'POST'):
-        user = request.user
         orderType = request.POST['orderType']
         quantity = int(request.POST['quantity'])
         price = getPrice(tid);
@@ -49,7 +49,7 @@ def ticker(request,tid):
             else:
                 stockObj.save()
             portfolio.save()
-    stockObj = getStockObj(tid);
+    stockObj = getStockObj(tid,user);
     context = {'stockObj':stockObj}
     return render(request,'stocks/ticker.html',context)
 

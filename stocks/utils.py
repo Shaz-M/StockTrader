@@ -2,6 +2,7 @@ from contextlib import nullcontext
 import requests
 from decimal import Decimal
 from numerize import numerize
+from portfolio.models import Portfolio
 import math
 
 millnames = ['',' T',' M',' B',' Trillion']
@@ -46,18 +47,24 @@ class stockInfo:
     prevClose = None
     volume = None
     description = None
+    avgBuyPrice = None
+    shares = None
 
 
 
 
 
-def getStockObj(ticker):
+def getStockObj(ticker,user):
     response  = getJson(ticker)
     prepResponse = getPrepJson(ticker)
+    portfolio = Portfolio.objects.get(user=user)
+    stockObj = portfolio.stock_set.get(ticker=ticker)
     obj = stockInfo()
+    obj.avgBuyPrice = stockObj.avgPrice
+    obj.shares = stockObj.numShares
     obj.fullName = prepResponse[0].get('companyName')
     obj.ticker = ticker
-    obj.volume = numerize.numerize(response[ticker].get('totalVolume'))
+    obj.volume = numerize.numerize(prepResponse[0].get('volAvg'))
     obj.prevClose = response[ticker].get('closePrice')
     obj.prevClose = math.floor(obj.prevClose*100)/100
     obj.description = prepResponse[0].get('description')
