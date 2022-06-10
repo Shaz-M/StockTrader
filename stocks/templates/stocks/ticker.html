@@ -104,8 +104,10 @@
               <div class="info-tab-section" id="askPrice"></div>
             </div>
             <div class="child">
-              <div class="label">Avg Volume</div>
-              <div class="info-tab-section" id="avgVolume"></div>
+              <div class="label">Volume</div>
+              <div class="info-tab-section" id="avgVolume">
+                {{stockObj.volume}}
+              </div>
             </div>
             <div class="child">
               <div class="label">High</div>
@@ -135,6 +137,14 @@
         ...
       </div>
     </div>
+  </div>
+  <div class="pt-2">
+    <hr class="line-break" />
+  </div>
+
+  <div>
+    <h3>Company Bio</h3>
+    <span id="description">{{stockObj.description}}</span>
   </div>
 </div>
 <div>

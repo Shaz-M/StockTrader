@@ -1,7 +1,15 @@
 from contextlib import nullcontext
 import requests
 from decimal import Decimal
+from numerize import numerize
+import math
 
+millnames = ['',' T',' M',' B',' Trillion']
+
+def getPrepJson(ticker):
+    url = "https://financialmodelingprep.com/api/v3/profile/"+ticker+"?apikey=fe82ca03e820e6d83d41d4aae63c55b9"
+    response = requests.get(url)
+    return response.json()
 
 def getJson(ticker):
     url = 'https://api.tdameritrade.com/v1/marketdata/'+ticker+'/quotes?apikey=D57TGYGPEEXE5IQRTHZG4EVDBATABE3B'
@@ -36,6 +44,8 @@ class stockInfo:
     ticker = None
     fullName = None
     prevClose = None
+    volume = None
+    description = None
 
 
 
@@ -43,8 +53,12 @@ class stockInfo:
 
 def getStockObj(ticker):
     response  = getJson(ticker)
+    prepResponse = getPrepJson(ticker)
     obj = stockInfo()
-    obj.fullName = response[ticker].get('description')
+    obj.fullName = prepResponse[0].get('companyName')
     obj.ticker = ticker
+    obj.volume = numerize.numerize(response[ticker].get('totalVolume'))
     obj.prevClose = response[ticker].get('closePrice')
+    obj.prevClose = math.floor(obj.prevClose*100)/100
+    obj.description = prepResponse[0].get('description')
     return obj
