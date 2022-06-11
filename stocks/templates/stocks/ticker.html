@@ -118,10 +118,12 @@
   </div>
 
   <!-- Buy/Sell END -->
+  {% endif %}
   <div class="pt-2">
     <hr class="line-break" />
   </div>
   <!-- Postions -->
+  {% if stockObj.shares %}
   <h4>Your Position</h4>
   <div class="spaceBetween">
     <div>
@@ -146,10 +148,10 @@
     </div>
   </div>
   <!-- Postions END -->
-  {% endif %}
   <div class="pt-2">
     <hr class="line-break" />
   </div>
+  {% endif %}
   <div class="infoDiv pt-2">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item">

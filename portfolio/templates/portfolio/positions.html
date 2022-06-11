@@ -1,11 +1,64 @@
-{% extends  'base.html' %}
-{% block content %}
-    <h1>This is the Positions page</h1>
-    {% if user.is_authenticated %}
-    <ul>
+{% extends 'base.html' %} {% load static %} {% block css %}
+<link rel="stylesheet" href="{% static 'portfolio/styles.css' %}" />
+
+{% endblock css %} {% block content %}
+<div class="container" >
+  <div style="overflow-x: auto" id="positions">
+    <table>
+      <thead>
+        <th class="symbolCol">Symbol</th>
+        <th>Mark</th>
+        <th>P/L Open</th>
+        <th>P/L Day</th>
+        <th>P/L %</th>
+        <th>Trade Price</th>
+        <th>Net Liq</th>
+      </thead>
+      <tbody>
         {% for stock in stocks %}
-        <li>{{stock.ticker}}</li>
+        <tr>
+          <td class="symbolCol">
+            <a href="{% url 'portfolio:ticker' stock %}" class="ticker"
+              >{{stock.ticker}}</a
+            ><br />
+            <small class="quantity">+{{stock.numShares}}</small>
+          </td>
+          <td class="marks"></td>
+          <td class="plOpen"></td>
+          <td class="plDay"></td>
+          <td class="percentReturn">0</td>
+          <td class="tradePrice">${{stock.avgPrice}}</td>
+          <td class="netLiq"></td>
+        </tr>
         {% endfor %}
-    </ul>
-    {% endif %}
+        <tr>
+          <td class="symbolCol" id="overallSec">Overall Totals:</td>
+          <td>-</td>
+          <td class="totalPlOpen"></td>
+          <td class="totalPlDay"></td>
+          <td id="totalPlPercent"></td>
+          <td>-</td>
+          <td class="totalNetLiq"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div id="mobileSums">
+    <div class="dataLines"><span class="label">P/L Day:</span><span class="totalPlDay align-right"></span></div>
+    <div class="dataLines">
+      <span class="label">P/L Open:</span><span class="totalPlOpen align-right"></span>
+    </div>
+    <div class="dataLines">
+      <span class="label">Net Liq:</span><span id="NetLiq+cash" class="align-right"></span>
+    </div>
+    <div class="dataLines">
+      <span class="label">Cash Balance:</span><span id="cashBal" class="align-right"></span>
+    </div>
+    <div class="dataLines">
+      <span class="label">Position Equity:</span
+      ><span class="totalNetLiq align-right"</span>
+    </div>
+  </div>
+</div>
+<script src="{% static 'portfolio/positions.js' %}"></script>
 {% endblock content %}

@@ -55,13 +55,15 @@ class stockInfo:
 
 
 def getStockObj(ticker,user):
+    obj = stockInfo()
     response  = getJson(ticker)
     prepResponse = getPrepJson(ticker)
     portfolio = Portfolio.objects.get(user=user)
-    stockObj = portfolio.stock_set.get(ticker=ticker)
-    obj = stockInfo()
-    obj.avgBuyPrice = stockObj.avgPrice
-    obj.shares = stockObj.numShares
+    stockExits = portfolio.stock_set.filter(ticker=ticker).exists()
+    if stockExits:
+        stockObj = portfolio.stock_set.get(ticker=ticker)
+        obj.avgBuyPrice = stockObj.avgPrice
+        obj.shares = stockObj.numShares
     obj.fullName = prepResponse[0].get('companyName')
     obj.ticker = ticker
     obj.volume = numerize.numerize(prepResponse[0].get('volAvg'))
