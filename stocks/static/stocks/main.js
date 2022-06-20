@@ -1,5 +1,5 @@
 let shares =  parseInt($("#shares").text())
-let avgPrice = parseFloat($("#avgPrice").text())
+let avgPrice = parseFloat($("#avgPrice").text().substring(1));
 function fetchdata(ticker){
     $.ajax({
     url: 'https://api.tdameritrade.com/v1/marketdata/'+ticker+'/quotes?apikey=D57TGYGPEEXE5IQRTHZG4EVDBATABE3B',
@@ -37,16 +37,22 @@ function fetchdata(ticker){
             let string = '+$'+change+' (+'+percent+'%)';
             $("#change").text(string);
             $(".priceDiv").css("color","rgba(8, 153, 129, 1)");
+            $("plDay").css("color","rgba(8, 153, 129, 1)");
+            $("#plDay").text("$"+plDay);
         }
         else if(change<0){
             let string = '-$'+change+' (-'+percent+'%)';
             $("#change").text(string);
             $(".priceDiv").css("color","#f1272e");
+            $("plDay").css("color","#f1272e");
+            $("#plDay").text("($"+plDay+")");
         }
         else{
             let string = '+$'+change+' (+'+percent+'%)';
             $("#change").text(string);
             $(".priceDiv").css("color","white");
+            $("plDay").css("color","white");
+            $("#plDay").text("$"+plDay);
         }
         $(".currPrice").each(function(){
             $(this).text("$"+price);
@@ -59,7 +65,6 @@ function fetchdata(ticker){
         $("#52high").text("$"+high52);
         $("#netLiq").text("$"+netLiq);
         $("#plOpen").text("$"+plOpen);
-        $("#plDay").text("$"+plDay);
     },
     complete:function(data){
         setTimeout(fetchdata,5000,ticker);
