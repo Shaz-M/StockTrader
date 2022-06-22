@@ -3,16 +3,17 @@ from .forms import TickerForm
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Portfolio
 from stocks.utils import validateTicker
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
 
-
+@login_required
 def dashboard(request):   
     context = {'title':'Dashboard'}
     return render(request,'portfolio/dashboard.html',context)
 
-
+@login_required
 def positions(request):
     user = request.user   
     portfolio = Portfolio.objects.get(user=user)
