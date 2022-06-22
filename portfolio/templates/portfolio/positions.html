@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="{% static 'portfolio/styles.css' %}" />
 
 {% endblock css %} {% block content %}
-<div class="container" >
+<div class="container">
   <div style="overflow-x: auto" id="positions">
     <table>
       <thead>
@@ -44,19 +44,25 @@
     </table>
   </div>
   <div id="mobileSums">
-    <div class="dataLines"><span class="label">P/L Day:</span><span class="totalPlDay align-right"></span></div>
     <div class="dataLines">
-      <span class="label">P/L Open:</span><span class="totalPlOpen align-right"></span>
+      <span class="label">P/L Day:</span
+      ><span class="totalPlDay align-right"></span>
     </div>
     <div class="dataLines">
-      <span class="label">Net Liq:</span><span id="NetLiq+cash" class="align-right"></span>
+      <span class="label">P/L Open:</span
+      ><span class="totalPlOpen align-right"></span>
     </div>
     <div class="dataLines">
-      <span class="label">Cash Balance:</span><span id="cashBal" class="align-right"></span>
+      <span class="label">Net Liq:</span
+      ><span id="NetLiqCash" class="align-right"></span>
+    </div>
+    <div class="dataLines">
+      <span class="label">Cash Balance:</span
+      ><span id="cashBal" class="align-right">{{cash}}</span>
     </div>
     <div class="dataLines">
       <span class="label">Position Equity:</span
-      ><span class="totalNetLiq align-right"</span>
+      ><span class="totalNetLiq align-right"></span>
     </div>
   </div>
 </div>

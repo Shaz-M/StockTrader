@@ -17,7 +17,8 @@ def positions(request):
     user = request.user   
     portfolio = Portfolio.objects.get(user=user)
     stocks = portfolio.stock_set.all()
-    context = {'stocks':stocks}
+    cash = portfolio.cashBalance
+    context = {'stocks':stocks, 'cash':cash}
     return render(request,'portfolio/positions.html',context)
 
 def navsearch(request):

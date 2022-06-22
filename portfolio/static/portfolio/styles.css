@@ -56,7 +56,8 @@ thead {
   padding-top: 15px;
 }
 
-small {
+small,
+#cashBal {
   color: rgba(8, 153, 129, 1);
 }
 

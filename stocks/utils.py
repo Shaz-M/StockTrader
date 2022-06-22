@@ -19,7 +19,7 @@ def getJson(ticker):
 
 def getPrice(ticker):
     response = getJson(ticker)
-    return Decimal(response[ticker].get('lastPrice'))
+    return round(Decimal(response[ticker].get('regularMarketLastPrice')),2)
 
 
 def validateTicker(ticker):

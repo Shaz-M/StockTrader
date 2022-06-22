@@ -235,7 +235,46 @@
         role="tabpanel"
         aria-labelledby="profile-tab"
       >
-        ...
+        <div class="pt-2 pb-2">
+          <div class="parent">
+            <div class="child">
+              <div class="label">Prev Close Price</div>
+              <div class="info-tab-section" id="prevClose">
+                ${{stockObj.prevClose}}
+              </div>
+            </div>
+            <div class="child">
+              <div class="label">Bid Price</div>
+              <div class="info-tab-section" id="bidPrice"></div>
+            </div>
+            <div class="child">
+              <div class="label">Ask Price</div>
+              <div class="info-tab-section" id="askPrice"></div>
+            </div>
+            <div class="child">
+              <div class="label">Avg Volume</div>
+              <div class="info-tab-section" id="avgVolume">
+                {{stockObj.volume}}
+              </div>
+            </div>
+            <div class="child">
+              <div class="label">High</div>
+              <div class="info-tab-section" id="high"></div>
+            </div>
+            <div class="child">
+              <div class="label">Low</div>
+              <div class="info-tab-section" id="low"></div>
+            </div>
+            <div class="child">
+              <div class="label">52 Week Low</div>
+              <div class="info-tab-section" id="52low"></div>
+            </div>
+            <div class="child">
+              <div class="label">52 Week High</div>
+              <div class="info-tab-section" id="52high"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

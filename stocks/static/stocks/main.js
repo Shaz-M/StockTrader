@@ -64,7 +64,20 @@ function fetchdata(ticker){
         $("#52low").text("$"+low52);
         $("#52high").text("$"+high52);
         $("#netLiq").text("$"+netLiq);
-        $("#plOpen").text("$"+plOpen);
+
+        if(plOpen > 0){
+            $("#plOpen").css("color","rgba(8, 153, 129, 1)");
+            $("#plOpen").text("$"+plOpen);
+        }
+        else if(plOpen < 0){
+            let temp = plOpen.substring(1);
+            $("#plOpen").css("color","#f1272e");
+            $("#plOpen").text("($"+temp+")");
+        }
+        else{
+            $("#plOpen").css("color","white");
+            $("#plOpen").text("$"+plOpen);
+        }
     },
     complete:function(data){
         setTimeout(fetchdata,5000,ticker);

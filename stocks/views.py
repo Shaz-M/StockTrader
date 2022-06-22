@@ -17,7 +17,7 @@ def ticker(request,tid):
     if(request.method == 'POST'):
         orderType = request.POST['orderType']
         quantity = int(request.POST['quantity'])
-        price = getPrice(tid);
+        price = getPrice(tid)
         portfolio = Portfolio.objects.get(user=user)
         stockExits = portfolio.stock_set.filter(ticker=tid).exists()
         # check if user can afford the buy or has enough shares to sell

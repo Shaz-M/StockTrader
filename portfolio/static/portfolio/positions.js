@@ -6,7 +6,7 @@ let openArr = $(".plOpen");
 let dayArr = $(".plDay");
 let netLiqArr = $(".netLiq");
 let percentArr = $(".percentReturn");
-
+let cash = parseFloat($("#cashBal").text());
 
 function fetchdata(stocks){
     let sumPlOpen = 0;
@@ -19,7 +19,7 @@ function fetchdata(stocks){
         let shares = parseInt(sharesArr[i].innerText);
         let markDom = markArr[i];
         let avgPrice = tradePriceArr[i].innerText;
-        avgPrice = parseInt(avgPrice.substring(1));
+        avgPrice = parseFloat(avgPrice.substring(1));
         let openDom = openArr[i];
         let dayDom = dayArr[i];
         let netLiqDom = netLiqArr[i];
@@ -39,6 +39,8 @@ function fetchdata(stocks){
             let plDay = shares*change;
             let percentPL = (plOpen/(shares*avgPrice))*100;
 
+            plDay = plDay.toFixed(2);
+            plOpen = plOpen.toFixed(2);
             plOpen = parseFloat(plOpen);
             plDay = parseFloat(plDay);
             let pl = [plOpen,plDay];
@@ -63,6 +65,7 @@ function fetchdata(stocks){
                 }
         
             }
+            percentPL = percentPL.toFixed(2);
             percentPL = parseFloat(percentPL);
             let temp =  percentPL.toFixed(2);
             if(percentPL>0){
@@ -101,9 +104,28 @@ function fetchdata(stocks){
     sumPlDay = parseFloat(sumPlDay);
     sumNetLiq = sumNetLiq.toFixed(2);
     sumNetLiq = parseFloat(sumNetLiq);
+    let netLiqCash = sumNetLiq+cash;
+    let totalPl = 0; 
+    if(sumPlOpen<0){
+        totalPl = (sumPlOpen/(netLiqCash-sumPlOpen))*100;
+        totalPl = totalPl.toFixed(2);
+        $("#totalPlPercent").css("color","#f1272e");
+        $("#totalPlPercent").text(totalPl+"%");
+    }
+    else if(sumPlOpen>0){       
+        totalPl = (sumPlOpen/netLiqCash)*100;
+        totalPl = totalPl.toFixed(2);
+        $("#totalPlPercent").css("color","rgba(8, 153, 129, 1)");
+        $("#totalPlPercent").text(totalPl+"%");
+    }
+    else{
+        totalPl = (sumPlOpen/netLiqCash)*100;
+        totalPl = totalPl.toFixed(2);
+        $("#totalPlPercent").css("color","white");
+        $("#totalPlPercent").text(totalPl+"%");
+    }
     let sums = [sumPlDay,sumPlOpen,sumNetLiq];
     let selectors = ['.totalPlDay','.totalPlOpen','.totalNetLiq'];
-
     for(let i = 0; i<selectors.length; i++){
         $(selectors[i]).each(function(){
             temp = sums[i].toFixed(2);
@@ -123,6 +145,8 @@ function fetchdata(stocks){
         })
 
     }
+    $("#NetLiqCash").css("color","rgba(8, 153, 129, 1)");
+    $("#NetLiqCash").text("$"+netLiqCash);
     //repeat function every interval
     setTimeout(fetchdata,5000,stocks);
 }
