@@ -105,6 +105,7 @@ function fetchdata(stocks){
     sumNetLiq = sumNetLiq.toFixed(2);
     sumNetLiq = parseFloat(sumNetLiq);
     let netLiqCash = sumNetLiq+cash;
+    netLiqCash = parseFloat(netLiqCash.toFixed(2));
     let totalPl = 0; 
     if(sumPlOpen<0){
         totalPl = (sumPlOpen/(netLiqCash-sumPlOpen))*100;

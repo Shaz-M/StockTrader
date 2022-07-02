@@ -4,13 +4,14 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import Portfolio
 from stocks.utils import validateTicker
 from django.contrib.auth.decorators import login_required
-
+from .utils import getChart
 
 # Create your views here.
 
 @login_required
-def dashboard(request):   
-    context = {'title':'Dashboard'}
+def dashboard(request):
+    chart = getChart()
+    context = {'title':'Dashboard', 'chart':chart}
     return render(request,'portfolio/dashboard.html',context)
 
 @login_required

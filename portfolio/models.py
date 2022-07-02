@@ -10,3 +10,11 @@ class Portfolio(models.Model):
     def __str__(self):
         return self.user.username
 
+# keep track of daily balance for charting
+class accountBal(models.Model):
+    date = models.DateField(auto_now_add=True)
+    balance = models.DecimalField(max_digits=10,decimal_places=2)
+    portfolio = models.ForeignKey(Portfolio,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.portfolio.user.username

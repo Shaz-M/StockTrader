@@ -49,6 +49,15 @@ class stockInfo:
     description = None
     avgBuyPrice = None
     shares = None
+    PEratio = None
+    PEGratio = None
+    PCFratio = None
+    DEratio = None
+    marketCap = None
+    beta = None
+    dividend = None
+    eps = None
+
 
 
 
@@ -58,6 +67,12 @@ def getStockObj(ticker,user):
     obj = stockInfo()
     response  = getJson(ticker)
     prepResponse = getPrepJson(ticker)
+    financials = requests.get('https://api.tdameritrade.com/v1/instruments?apikey=D57TGYGPEEXE5IQRTHZG4EVDBATABE3B&symbol='+ticker+'&projection=fundamental')
+    financials = financials.json()
+    financials = financials[ticker].get('fundamental')
+    marketCap = requests.get('https://financialmodelingprep.com/api/v3/market-capitalization/'+ticker+'?apikey=fe82ca03e820e6d83d41d4aae63c55b9')
+    marketCap = marketCap.json()
+    marketCap = marketCap[0].get('marketCap')    
     portfolio = Portfolio.objects.get(user=user)
     stockExits = portfolio.stock_set.filter(ticker=ticker).exists()
     if stockExits:
@@ -70,4 +85,12 @@ def getStockObj(ticker,user):
     obj.prevClose = response[ticker].get('closePrice')
     obj.prevClose = math.floor(obj.prevClose*100)/100
     obj.description = prepResponse[0].get('description')
+    obj.PEratio = financials.get('peRatio')
+    obj.PEGratio = financials.get('pegRatio')
+    obj.PCFratio = financials.get('pcfRatio')
+    obj.DEratio = financials.get('totalDebtToEquity')
+    obj.marketCap = numerize.numerize(marketCap)
+    obj.beta = financials.get('beta')
+    obj.dividend = financials.get('dividendAmount')
+    obj.eps = financials.get('epsTTM')
     return obj

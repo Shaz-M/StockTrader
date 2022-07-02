@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'portfolio.apps.PortfolioConfig',
     'users.apps.UsersConfig',
     'crispy_forms',
+    'huey.contrib.djhuey',
 ]
 
 MIDDLEWARE = [
