@@ -1,0 +1,17 @@
+#chart {
+  height: 500px;
+  background-color: rgb(26, 26, 26);
+  border: solid 1px grey;
+  border-radius: 5px;
+}
+.spaceBetween {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.accountDiv {
+  border: solid 1px grey;
+  background-color: rgb(26, 26, 26);
+  flex: 1 0 21%;
+}

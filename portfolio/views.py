@@ -4,14 +4,25 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import Portfolio
 from stocks.utils import validateTicker
 from django.contrib.auth.decorators import login_required
-from .utils import getChart
+import json
 
 # Create your views here.
 
 @login_required
 def dashboard(request):
-    chart = getChart()
-    context = {'title':'Dashboard', 'chart':chart}
+    user = request.user
+    portfolio = Portfolio.objects.get(user=user)
+    balanceHistory = portfolio.accountbal_set.exists()
+    labels = []
+    data = []
+    #add all balances is the user has balance history
+    if balanceHistory:
+        balances = portfolio.accountbal_set.all()
+        for balance in balances:
+            print(balance.date)
+            labels.append(str(balance.date))
+            data.append(str(balance.balance))
+    context = {'title':'Dashboard','labels':json.dumps(labels),'data':json.dumps(data)}
     return render(request,'portfolio/dashboard.html',context)
 
 @login_required

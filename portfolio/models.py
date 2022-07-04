@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
 
 # Create your models here.
 class Portfolio(models.Model):
@@ -12,7 +13,7 @@ class Portfolio(models.Model):
 
 # keep track of daily balance for charting
 class accountBal(models.Model):
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField(default=datetime.now)
     balance = models.DecimalField(max_digits=10,decimal_places=2)
     portfolio = models.ForeignKey(Portfolio,on_delete=models.CASCADE)
 
