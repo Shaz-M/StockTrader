@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import Portfolio
 from stocks.utils import validateTicker
 from django.contrib.auth.decorators import login_required
-from .utils import topGainers,topLosers,getNews
+from .utils import topGainers,topLosers,getNews,getDoChartData
 import json
 
 # Create your views here.
@@ -22,13 +22,25 @@ def dashboard(request):
     if balanceHistory:
         balances = portfolio.accountbal_set.all()
         for balance in balances:
-            print(balance.date)
             labels.append(str(balance.date))
             data.append(str(balance.balance))
     gainers = topGainers()
     losers = topLosers()
     news = getNews()
-    context = {'title':'Dashboard','labels':json.dumps(labels),'data':json.dumps(data),'gainers':gainers,'losers':losers,'news':news}
+    doChartLabels,doChartData,totalValue,totalReturn,dailyPL = getDoChartData(user)
+    context = {
+    'title':'Dashboard',
+    'labels':json.dumps(labels),
+    'data':json.dumps(data),
+    'gainers':gainers,
+    'losers':losers,
+    'news':news,
+    'doChartLabels':doChartLabels,
+    'doChartData':doChartData,
+    'totalValue':totalValue,
+    'totalReturn':totalReturn,
+    'dailyReturn':dailyPL,
+    }
     return render(request,'portfolio/dashboard.html',context)
 
 @login_required

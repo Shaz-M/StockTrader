@@ -1,5 +1,7 @@
 from distutils import archive_util
 from django.http import response
+from .models import Portfolio
+from decimal import Decimal
 import requests
 
 class stockMover:
@@ -67,3 +69,31 @@ def getNews():
         newsArr.append(obj)
     return newsArr
 
+#return all stocks weight and 
+def getDoChartData(user):
+    data = []
+    labels = []
+    totalValue = 0
+    dailyPL = 0
+    portfolio = Portfolio.objects.get(user=user)
+    stocks = portfolio.stock_set.all()
+    for stock in stocks:
+        labels.append(stock.ticker)
+        price,change = getPriceChange(stock.ticker)
+        totalValue+=price*stock.numShares
+        dailyPL+=stock.numShares*change
+        data.append(str(price*stock.numShares))
+    labels.append('Cash')
+    data.append(str(portfolio.cashBalance))
+    totalValue+=portfolio.cashBalance
+    totalReturn = totalValue-portfolio.initialBalance
+    return labels,data,totalValue,totalReturn,dailyPL
+        
+    
+def getPriceChange(ticker):
+    url = 'https://api.tdameritrade.com/v1/marketdata/'+ticker+'/quotes?apikey=D57TGYGPEEXE5IQRTHZG4EVDBATABE3B'
+    response = requests.get(url)
+    response = response.json()
+    price = round(Decimal(response[ticker].get('regularMarketLastPrice')),2)
+    change = round(Decimal(response[ticker].get('netChange')),2)
+    return price,change

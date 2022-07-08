@@ -3,9 +3,21 @@
 
 <div class="container">
   <div class="spaceBetween">
-    <div class="accountDiv boxDiv">Total Value</div>
-    <div class="accountDiv boxDiv">Total Return</div>
-    <div class="accountDiv boxDiv">Day Return</div>
+    <div class="accountDiv boxDiv">
+      Total Value
+      <br />
+      <span>${{totalValue}}</span>
+    </div>
+    <div class="accountDiv boxDiv">
+      Total Return
+      <br />
+      <span>${{totalReturn}}</span>
+    </div>
+    <div class="accountDiv boxDiv">
+      Day Return
+      <br />
+      <span>${{dailyReturn}}</span>
+    </div>
   </div>
   <br />
   <div id="chart" class="boxDiv">
@@ -17,18 +29,22 @@
       <div style="overflow-x: auto" id="positions">
         <table>
           <thead>
-            <th class="symbolCol">Symbol</th>
-            <th>Last Price</th>
-            <th>Change</th>
-            <th>%Change</th>
+            <th class="symbolTH">Symbol</th>
+            <th class="priceTH">Last Price</th>
+            <th class="priceTH">Change</th>
+            <th class="priceTH">%Change</th>
           </thead>
           <tbody>
             {% for gainer in gainers %}
-            <tr>
-              <td class="symbolCol">{{gainer.symbol}}</td>
-              <td class="marks">{{gainer.price}}</td>
-              <td class="plOpen">{{gainer.change}}</td>
-              <td class="plDay">{{gainer.percent}}%</td>
+            <tr data-href="{% url 'portfolio:ticker' gainer.symbol %}">
+              <td class="symbolCol">
+                {{gainer.symbol}}
+                <br />
+                <small class="fullName">{{gainer.name}}</small>
+              </td>
+              <td class="priceInfo">{{gainer.price}}</td>
+              <td class="gainerChange priceInfo">+ {{gainer.change}}</td>
+              <td class="gainerChange priceInfo">+ {{gainer.percent}}%</td>
             </tr>
             {% endfor %}
           </tbody>
@@ -40,18 +56,22 @@
       <div style="overflow-x: auto" id="positions">
         <table>
           <thead>
-            <th class="symbolCol">Symbol</th>
-            <th>Last Price</th>
-            <th>Change</th>
-            <th>%Change</th>
+            <th class="symbolTH">Symbol</th>
+            <th class="priceTH">Last Price</th>
+            <th class="priceTH">Change</th>
+            <th class="priceTH">%Change</th>
           </thead>
           <tbody>
             {% for loser in losers %}
-            <tr>
-              <td class="symbolCol">{{loser.symbol}}</td>
-              <td class="marks">{{loser.price}}</td>
-              <td class="plOpen">{{loser.change}}</td>
-              <td class="plDay">{{loser.percent}}%</td>
+            <tr data-href="{% url 'portfolio:ticker' loser.symbol %}">
+              <td class="symbolCol">
+                {{loser.symbol}}
+                <br />
+                <small class="fullName">{{loser.name}}</small>
+              </td>
+              <td class="priceInfo">{{loser.price}}</td>
+              <td class="loserChange priceInfo">- {{loser.change}}</td>
+              <td class="loserChange priceInfo">- {{loser.percent}}%</td>
             </tr>
             {% endfor %}
           </tbody>
@@ -60,7 +80,10 @@
     </div>
   </div>
   <div class="infoSection">
-    <div class="boxDiv newsDiv"></div>
+    <div class="boxDiv newsDiv flexHeight">
+      <div id="areaTitle">TOTAL INVESTMENT</div>
+      <div id="doChart"><canvas id="doughnutChart"></canvas></div>
+    </div>
     <div class="boxDiv newsDiv">
       <span class="title">NEWS</span>
       {% for article in news %}
@@ -86,6 +109,83 @@
 -->
   <script src="{% static 'portfolio/Chart.min.js' %}"></script>
   <script src="{% static 'portfolio/chart-area.js' %}"></script>
+  <script src="{% static 'portfolio/center-text-plugin.js' %}"></script>
+  <script src="{% static 'portfolio/dashboard.js' %}"></script>
+
+  <script src="https://d3js.org/d3-color.v1.min.js"></script>
+  <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+  <script language="JavaScript">
+    //functions to calculate color wheel
+    function calculatePoint(i, intervalSize, colorRangeInfo) {
+      var { colorStart, colorEnd, useEndAsStart } = colorRangeInfo;
+      return (useEndAsStart
+      ? (colorEnd - (i * intervalSize))
+      : (colorStart + (i * intervalSize)));
+    }
+    function interpolateColors(dataLength, colorScale, colorRangeInfo) {
+      var { colorStart, colorEnd } = colorRangeInfo;
+      var colorRange = colorEnd - colorStart;
+      var intervalSize = colorRange / dataLength;
+      var i, colorPoint;
+      var colorArray = [];
+
+      for (i = 0; i < dataLength; i++) {
+        colorPoint = calculatePoint(i, intervalSize, colorRangeInfo);
+        colorArray.push(colorScale(colorPoint));
+      }
+
+      return colorArray;
+    }
+    colorScale = d3.interpolateBuPu;
+    colorRangeInfo = {
+      colorStart:0,
+      colorEnd:0.95,
+      useEndAsStart:true,
+    }
+    colors2 = interpolateColors({{doChartData|length}},colorScale,colorRangeInfo)
+
+    //create chart
+    var doughnut = document.getElementById("doughnutChart");
+    var myDoughnutChart = new Chart(doughnut, {
+      type: "doughnut",
+      data: {
+        labels: {{doChartLabels|safe}},
+        datasets: [
+          {
+            label: "My First dataset",
+            data: {{doChartData|safe}},
+            backgroundColor:colors2,
+            borderColor:colors2,
+          },
+        ],
+      },
+      options: {
+        'onClick' : function (evt, item) {
+                        console.log ('legend onClick', evt);
+                        console.log('legd item', item.datasetIndex);
+                    },
+        elements: {
+          center: {
+            text: '$'+{{totalValue}},
+            color: 'white', // Default is #000000
+            fontStyle: "DM Sans",
+            sidePadding: 20, // Default is 20 (as a percentage)
+            maxFontSize: 23, // Default is 20 (in px), set to false and text will not wrap.
+            lineHeight: 25 // Default is 25 (in px), used for when text wraps
+        }
+      },
+        maintainAspectRatio: false,
+        responsive:true,
+        cutoutPercentage: 80,
+                legend: {
+                    position: 'bottom'
+                },
+
+      },
+    });
+  </script>
   <script language="JavaScript">
     // Area Chart Example
     var ctx = document.getElementById("myAreaChart");

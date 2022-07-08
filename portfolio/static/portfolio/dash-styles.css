@@ -25,7 +25,8 @@
 .infoDiv {
   flex: 1 0 21%;
   min-width: 250px;
-  height: 250px;
+  min-height: 250px;
+  height: auto;
   padding: 20px;
 }
 
@@ -37,7 +38,7 @@
   padding-top: 30px;
 }
 table {
-  border-collapse: collapse;
+  border-collapse: separate;
   border-spacing: 0;
   width: 100%;
 }
@@ -54,10 +55,11 @@ thead {
   white-space: nowrap;
 }
 .symbolCol {
-  padding-right: 30px;
+  padding-right: 2px;
 }
 body {
   background-color: #51557e;
+  padding-bottom: 20px;
 }
 
 .newsDiv {
@@ -91,4 +93,56 @@ body {
 .sourceTime {
   font-size: 65%;
   color: grey;
+}
+
+.flexHeight {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+#doChart {
+  flex-grow: 1;
+}
+
+.gainerChange {
+  color: rgba(8, 153, 129, 1);
+}
+
+.loserChange {
+  color: #f1272e;
+}
+
+.symbolCol {
+  line-height: 0.8em;
+}
+td {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-style: none;
+}
+
+.priceTH {
+  width: 21.66%;
+}
+
+.symbolTH {
+  width: 35%;
+}
+
+.fullName {
+  font-size: 10px;
+}
+tr {
+  transition: all 0.2s ease-in-out;
+}
+
+tr[data-href]:hover {
+  background-color: rgb(143, 209, 235);
+  cursor: pointer;
+  border: 1px solid;
+}
+
+.priceInfo {
+  font-size: small;
 }
