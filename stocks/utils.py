@@ -1,4 +1,3 @@
-from contextlib import nullcontext
 import requests
 from decimal import Decimal
 from numerize import numerize
@@ -8,7 +7,7 @@ import math
 millnames = ['',' T',' M',' B',' Trillion']
 
 def getPrepJson(ticker):
-    url = "https://financialmodelingprep.com/api/v3/profile/"+ticker+"?apikey=fe82ca03e820e6d83d41d4aae63c55b9"
+    url = "https://financialmodelingprep.com/api/v3/profile/"+ticker+"?apikey=5e861c0bf1235ee81d2cb64fe8d90012"
     response = requests.get(url)
     return response.json()
 
@@ -62,7 +61,6 @@ class stockInfo:
 
 
 
-
 def getStockObj(ticker,user):
     obj = stockInfo()
     response  = getJson(ticker)
@@ -70,7 +68,7 @@ def getStockObj(ticker,user):
     financials = requests.get('https://api.tdameritrade.com/v1/instruments?apikey=D57TGYGPEEXE5IQRTHZG4EVDBATABE3B&symbol='+ticker+'&projection=fundamental')
     financials = financials.json()
     financials = financials[ticker].get('fundamental')
-    marketCap = requests.get('https://financialmodelingprep.com/api/v3/market-capitalization/'+ticker+'?apikey=fe82ca03e820e6d83d41d4aae63c55b9')
+    marketCap = requests.get('https://financialmodelingprep.com/api/v3/market-capitalization/'+ticker+'?apikey=5e861c0bf1235ee81d2cb64fe8d90012')
     marketCap = marketCap.json()
     marketCap = marketCap[0].get('marketCap')    
     portfolio = Portfolio.objects.get(user=user)

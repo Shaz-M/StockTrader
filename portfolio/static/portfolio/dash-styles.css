@@ -1,17 +1,94 @@
 #chart {
-  height: 500px;
-  background-color: rgb(26, 26, 26);
-  border: solid 1px grey;
-  border-radius: 5px;
+  height: 400px;
 }
 .spaceBetween {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 10px;
 }
 
 .accountDiv {
-  border: solid 1px grey;
-  background-color: rgb(26, 26, 26);
   flex: 1 0 21%;
+  min-width: 250px;
+  text-align: center;
+  height: 75px;
+}
+
+.boxDiv {
+  background-color: rgba(40, 40, 40, 0.75);
+  border-radius: 5px;
+  box-shadow: 7px 7px 8px hsl(0deg 0% 0% / 0.38);
+}
+
+.infoDiv {
+  flex: 1 0 21%;
+  min-width: 250px;
+  height: 250px;
+  padding: 20px;
+}
+
+.infoSection {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 30px;
+  padding-top: 30px;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+
+th,
+td {
+  text-align: left;
+}
+
+thead {
+  font-weight: lighter;
+  color: grey;
+  font-size: smaller;
+  white-space: nowrap;
+}
+.symbolCol {
+  padding-right: 30px;
+}
+body {
+  background-color: #51557e;
+}
+
+.newsDiv {
+  flex: 1 0 21%;
+  min-width: 350px;
+  min-height: 400px;
+  height: auto;
+  padding: 20px;
+}
+
+.newsContent {
+  padding-top: 30px;
+}
+
+.image {
+  height: 10%;
+  width: 20%;
+  border-radius: 5px;
+  float: left;
+  margin-right: 20px;
+}
+
+.links {
+  color: white;
+  text-decoration: underline;
+  font-size: 80%;
+  text-decoration-thickness: 1px;
+  text-decoration-color: grey;
+}
+
+.sourceTime {
+  font-size: 65%;
+  color: grey;
 }

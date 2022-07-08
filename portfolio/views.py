@@ -1,9 +1,12 @@
+from termios import TIOCPKT_FLUSHREAD
+from webbrowser import get
 from django.shortcuts import redirect, render
 from .forms import TickerForm
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Portfolio
 from stocks.utils import validateTicker
 from django.contrib.auth.decorators import login_required
+from .utils import topGainers,topLosers,getNews
 import json
 
 # Create your views here.
@@ -22,7 +25,10 @@ def dashboard(request):
             print(balance.date)
             labels.append(str(balance.date))
             data.append(str(balance.balance))
-    context = {'title':'Dashboard','labels':json.dumps(labels),'data':json.dumps(data)}
+    gainers = topGainers()
+    losers = topLosers()
+    news = getNews()
+    context = {'title':'Dashboard','labels':json.dumps(labels),'data':json.dumps(data),'gainers':gainers,'losers':losers,'news':news}
     return render(request,'portfolio/dashboard.html',context)
 
 @login_required

@@ -3,122 +3,196 @@
 
 <div class="container">
   <div class="spaceBetween">
-    <div class="accountDiv">Total Value</div>
-    <div class="accountDiv">Total Return</div>
-    <div class="accountDiv">Day Return</div>
+    <div class="accountDiv boxDiv">Total Value</div>
+    <div class="accountDiv boxDiv">Total Return</div>
+    <div class="accountDiv boxDiv">Day Return</div>
   </div>
   <br />
-  <div id="chart">
+  <div id="chart" class="boxDiv">
     <canvas id="myAreaChart"></canvas>
   </div>
-</div>
-<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <div class="infoSection">
+    <div class="boxDiv infoDiv">
+      <span class="title">TOP GAINERS</span>
+      <div style="overflow-x: auto" id="positions">
+        <table>
+          <thead>
+            <th class="symbolCol">Symbol</th>
+            <th>Last Price</th>
+            <th>Change</th>
+            <th>%Change</th>
+          </thead>
+          <tbody>
+            {% for gainer in gainers %}
+            <tr>
+              <td class="symbolCol">{{gainer.symbol}}</td>
+              <td class="marks">{{gainer.price}}</td>
+              <td class="plOpen">{{gainer.change}}</td>
+              <td class="plDay">{{gainer.percent}}%</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="boxDiv infoDiv">
+      <span class="title">TOP LOSERS</span>
+      <div style="overflow-x: auto" id="positions">
+        <table>
+          <thead>
+            <th class="symbolCol">Symbol</th>
+            <th>Last Price</th>
+            <th>Change</th>
+            <th>%Change</th>
+          </thead>
+          <tbody>
+            {% for loser in losers %}
+            <tr>
+              <td class="symbolCol">{{loser.symbol}}</td>
+              <td class="marks">{{loser.price}}</td>
+              <td class="plOpen">{{loser.change}}</td>
+              <td class="plDay">{{loser.percent}}%</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="infoSection">
+    <div class="boxDiv newsDiv"></div>
+    <div class="boxDiv newsDiv">
+      <span class="title">NEWS</span>
+      {% for article in news %}
+      <div class="newsContent">
+        <img
+          class="image"
+          src="{{article.imageUrl}}"
+          alt="Article Image"
+          onerror="if (this.src != 'error.jpg') this.src = 'https://i.postimg.cc/cJFms8zy/download.jpg';"
+        />
+        <div>
+          <a href="{{article.url}}" class="links">{{article.title}}</a>
+          <br />
+          <span class="sourceTime"
+            >{{article.source}} - {{article.dateTime}}</span
+          >
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 -->
-<script src="{% static 'portfolio/Chart.min.js' %}"></script>
-<script src="{% static 'portfolio/chart-area.js' %}"></script>
-<script language="JavaScript">
-  // Area Chart Example
-  var ctx = document.getElementById("myAreaChart");
-  var myLineChart = new Chart(ctx, {
-    type: "line",
-    data: {
-      labels: {{labels|safe}},
-      datasets: [
-        {
-          label: "Balance",
-          lineTension: 0.3,
-          backgroundColor: "rgba(78, 115, 223, 0.15)",
-          borderColor: "rgba(78, 115, 223, 1)",
-          pointRadius: 0,
-          pointBackgroundColor: "rgba(78, 115, 223, 1)",
-          pointBorderColor: "rgba(78, 115, 223, 1)",
-          pointHoverRadius: 3,
-          pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-          pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-          pointHitRadius: 10,
-          pointBorderWidth: 2,
-          data: {{ data|safe }},
-        },
-      ],
-    },
-    options: {
-      hover: {
-        intersect: false,
-      },
-      maintainAspectRatio: false,
-      layout: {
-        padding: {
-          left: 10,
-          right: 25,
-          top: 25,
-          bottom: 0,
-        },
-      },
-      scales: {
-        xAxes: [
+  <script src="{% static 'portfolio/Chart.min.js' %}"></script>
+  <script src="{% static 'portfolio/chart-area.js' %}"></script>
+  <script language="JavaScript">
+    // Area Chart Example
+    var ctx = document.getElementById("myAreaChart");
+    var myLineChart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: {{labels|safe}},
+        datasets: [
           {
-            time: {
-              unit: "date",
-            },
-            gridLines: {
-              display: false,
-              drawBorder: false,
-            },
-            ticks: {
-              autoSkip: true,
-              maxTicksLimit: 7,
-              fontColor:"rgb(191, 191, 191)",
-            },
+            label: "Balance",
+            lineTension: 0.3,
+            backgroundColor: "rgba(78, 115, 223, 0.15)",
+            borderColor: "rgba(78, 115, 223, 1)",
+            pointRadius: 0,
+            pointBackgroundColor: "rgba(78, 115, 223, 1)",
+            pointBorderColor: "rgba(78, 115, 223, 1)",
+            pointHoverRadius: 3,
+            pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+            pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+            pointHitRadius: 10,
+            pointBorderWidth: 2,
+            data: {{ data|safe }},
           },
         ],
-        yAxes: [
-          {
-            ticks: {
-              fontColor:"rgb(191, 191, 191)",
-              maxTicksLimit: 5,
-              padding: 10,
-              // Include a dollar sign in the ticks
-              callback: function (value, index, values) {
-                return "$" + number_format(value);
+      },
+      options: {
+        hover: {
+          intersect: false,
+        },
+        maintainAspectRatio: false,
+        layout: {
+          padding: {
+            left: 5,
+            right: 25,
+            top: 25,
+            bottom: 0,
+          },
+        },
+        scales: {
+          xAxes: [
+            {
+              time: {
+                unit: "date",
+              },
+              gridLines: {
+                display: false,
+                drawBorder: false,
+              },
+              ticks: {
+                autoSkip: true,
+                maxTicksLimit: 7,
+                fontColor:"rgb(191, 191, 191)",
+                fontSize:10,
               },
             },
-            gridLines: {
-              display: false,
-              color: "rgb(234, 236, 244)",
-              zeroLineColor: "rgb(234, 236, 244)",
-              drawBorder: false,
-              borderDash: [2],
-              zeroLineBorderDash: [2],
+          ],
+          yAxes: [
+            {
+              ticks: {
+                fontColor:"rgb(191, 191, 191)",
+                maxTicksLimit: 5,
+                padding: 10,
+                fontSize:10,
+
+                // Include a dollar sign in the ticks
+                callback: function (value, index, values) {
+                  return "$" + number_format(value);
+                },
+              },
+              gridLines: {
+                display: false,
+                color: "rgb(234, 236, 244)",
+                zeroLineColor: "rgb(234, 236, 244)",
+                drawBorder: false,
+                borderDash: [2],
+                zeroLineBorderDash: [2],
+              },
             },
-          },
-        ],
-      },
-      legend: {
-        display: false,
-      },
-      tooltips: {
-        backgroundColor: "rgb(255,255,255)",
-        bodyFontColor: "#858796",
-        titleMarginBottom: 10,
-        titleFontColor: "#6e707e",
-        titleFontSize: 14,
-        borderColor: "#dddfeb",
-        borderWidth: 1,
-        xPadding: 15,
-        yPadding: 15,
-        displayColors: false,
-        intersect: false,
-        mode: "index",
-        caretPadding: 10,
-        callbacks: {
-          label: function (tooltipItem, chart) {
-            var datasetLabel =
-              chart.datasets[tooltipItem.datasetIndex].label || "";
-            return datasetLabel + ": $" + number_format(tooltipItem.yLabel);
+          ],
+        },
+        legend: {
+          display: false,
+        },
+        tooltips: {
+          backgroundColor: "rgb(255,255,255)",
+          bodyFontColor: "#858796",
+          titleMarginBottom: 10,
+          titleFontColor: "#6e707e",
+          titleFontSize: 14,
+          borderColor: "#dddfeb",
+          borderWidth: 1,
+          xPadding: 15,
+          yPadding: 15,
+          displayColors: false,
+          intersect: false,
+          mode: "index",
+          caretPadding: 10,
+          callbacks: {
+            label: function (tooltipItem, chart) {
+              var datasetLabel =
+                chart.datasets[tooltipItem.datasetIndex].label || "";
+              return datasetLabel + ": $" + number_format(tooltipItem.yLabel);
+            },
           },
         },
       },
-    },
-  });
-</script>
-{% endblock content %}
+    });
+  </script>
+  {% endblock content %}
+</div>
