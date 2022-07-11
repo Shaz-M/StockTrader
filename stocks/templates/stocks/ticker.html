@@ -3,7 +3,7 @@
 
 {% endblock css %} {% block content %}
 
-<div id="mainDisplay" class="container mt-5">
+<div id="mainDisplay" class="container mt-5 mb-5">
   <div>
     <div class="nameDiv">
       <h1 class="mb-0" id="ticker">{{ stockObj.ticker }}</h1>
@@ -79,24 +79,49 @@
         >
       </li>
     </ul>
-    <div class="tab-content" id="buysell-tab">
+    <div class="tab-content boxDiv" id="buysell-tab">
       <div
         class="tab-pane fade"
         id="buypanel"
         role="tabpanel"
         aria-labelledby="home-tab"
       >
-        <div>
-          Order Type: Market Order<br />
-          Trade Price: <span class="currPrice"></span><br />
-          <form id="buy-form" method="POST" action="">
-            {% csrf_token %}
-            <label for="quantity">Quantity:</label>
-            <input type="number" min="0" id="quantity" name="quantity" /><br />
+        <span class="buysell-title">Buy {{stockObj.ticker}}</span><br />
+        <small id="cashBal">${{cash}} available</small>
+        <form id="buy-form" method="POST" action="">
+          {% csrf_token %}
+          <span class="buysell-section">
+            <label for="quantity">Number of Shares</label>
+            <div class="quantity buttons_added">
+              <input type="button" value="-" class="minus" /><input
+                type="number"
+                step="1"
+                min="1"
+                max=""
+                name="quantity"
+                id="quantity"
+                value="1"
+                title="Qty"
+                class="input-text qty text"
+                size="4"
+                pattern=""
+                inputmode=""
+              /><input type="button" value="+" class="plus" />
+            </div>
+            <br />
             <input type="hidden" name="orderType" value="Buy" />
-            <button type="submit">Submit Order</button>
-          </form>
-        </div>
+          </span>
+          <span class="buysell-section">
+            Market Price<span class="currPrice align-right"></span>
+          </span>
+          <br />
+          <span class="buysell-section">
+            Estimated Cost:<span id="tradeCost" class="align-right">$0.00</span>
+          </span>
+          <br />
+          <button class="orderButton" type="submit">Submit Order</button>
+        </form>
+        Resulting Balance:<span id="resBal">${{cash}}</span>
       </div>
       <div
         class="tab-pane fade"
@@ -109,7 +134,7 @@
         <form id="sell-form" method="POST" action="">
           {% csrf_token %}
           <label for="quantity">Quantity:</label>
-          <input type="number" min="0" id="quantity" name="quantity" /><br />
+          <input type="number" min="0" name="quantity" /><br />
           <input type="hidden" name="orderType" value="Sell" />
           <button type="submit">Submit Order</button>
         </form>
@@ -282,7 +307,62 @@
     <h4>Company Bio</h4>
     <span id="description">{{stockObj.description}}</span>
   </div>
+
+  <div class="pt-2">
+    <hr class="line-break" />
+  </div>
+
+  <div>
+    <!-- TradingView Widget BEGIN -->
+    <div class="tradingview-widget-container mb-0">
+      <div class="tradingview-widget-container__widget"></div>
+
+      <script
+        type="text/javascript"
+        src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js"
+        async
+      >
+          {
+          "interval": "1m",
+          "width": "100%",
+          "isTransparent": true,
+          "height": "100%",
+          "symbol": "NASDAQ:{{ticker}}",
+          "showIntervalTabs": true,
+          "locale": "en",
+          "colorTheme": "dark"
+        }
+      </script>
+    </div>
+    <!-- TradingView Widget END -->
+  </div>
+
+  <div class="pt-2">
+    <hr class="line-break" />
+  </div>
+
+  <div class="boxDiv newsDiv">
+    <span class="title">NEWS</span>
+    {% for article in newsObj %}
+    <div class="newsContent">
+      <img
+        class="image"
+        src="{{article.imageUrl}}"
+        alt="Article Image"
+        onerror="if (this.src != 'error.jpg') this.src = 'https://i.postimg.cc/cJFms8zy/download.jpg';"
+      />
+      <div>
+        <a href="{{article.url}}" class="links">{{article.title}}</a>
+        <br />
+        <span class="sourceTime"
+          >{{article.source}} - {{article.dateTime}}</span
+        >
+      </div>
+    </div>
+    {% endfor %}
+  </div>
 </div>
 
 <script src="{% static 'stocks/main.js' %}"></script>
+
 {% endblock content %}

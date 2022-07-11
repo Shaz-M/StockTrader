@@ -97,3 +97,20 @@ def getPriceChange(ticker):
     price = round(Decimal(response[ticker].get('regularMarketLastPrice')),2)
     change = round(Decimal(response[ticker].get('netChange')),2)
     return price,change
+
+def getNewsTicker(ticker):
+    url = 'https://newsapi.org/v2/everything?q='+ticker+'&sortBy=publishedAt&apiKey=9f070c3650844cbba78e8c2024befa22&pageSize=4'
+    response = requests.get(url)
+    response = response.json()
+    articles = response.get('articles')
+    newsArr = []
+    for i in range(4):
+        obj = NewsObj()
+        obj.source = articles[i].get('source').get('name')
+        obj.author = articles[i].get('author')
+        obj.url = articles[i].get('url')
+        obj.imageUrl = articles[i].get('urlToImage')
+        obj.title = articles[i].get('title').split('-',1)[0]
+        obj.dateTime = articles[i].get('publishedAt')
+        newsArr.append(obj)
+    return newsArr

@@ -6,7 +6,7 @@ from portfolio.models import Portfolio
 from .models import Stock
 from django.shortcuts import redirect
 from .utils import getPrice,validateTicker,validateBuy,validateSell,getStockObj
-
+from portfolio.utils import getNewsTicker
 # Create your views here.
 
 def ticker(request,tid):
@@ -49,7 +49,10 @@ def ticker(request,tid):
             else:
                 stockObj.save()
             portfolio.save()
-    stockObj = getStockObj(tid,user);
-    context = {'stockObj':stockObj}
+    portfolio = Portfolio.objects.get(user=user)
+    cash = portfolio.cashBalance
+    stockObj = getStockObj(tid,user)
+    newsObj = getNewsTicker(tid)
+    context = {'stockObj':stockObj,'newsObj':newsObj,'ticker':tid,'cash':cash}
     return render(request,'stocks/ticker.html',context)
 

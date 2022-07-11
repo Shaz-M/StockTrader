@@ -23,7 +23,7 @@ thead {
   position: -webkit-sticky;
   position: sticky;
   left: 0px;
-  background-color: black;
+  background-color: #51557e;
   line-height: 0.8em;
 }
 .symbolCol::before {
@@ -94,4 +94,9 @@ td {
 .label {
   color: grey;
   font-size: 14px;
+}
+.boxDiv {
+  background-color: rgba(40, 40, 40, 0.75);
+  border-radius: 5px;
+  box-shadow: 7px 7px 8px hsl(0deg 0% 0% / 0.38);
 }

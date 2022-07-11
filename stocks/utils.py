@@ -69,25 +69,25 @@ def getStockObj(ticker,user):
     financials = financials.json()
     financials = financials[ticker].get('fundamental')
     marketCap = requests.get('https://financialmodelingprep.com/api/v3/market-capitalization/'+ticker+'?apikey=5e861c0bf1235ee81d2cb64fe8d90012')
-    marketCap = marketCap.json()
-    marketCap = marketCap[0].get('marketCap')    
+    #marketCap = marketCap.json()
+    #marketCap = marketCap[0].get('marketCap')    
     portfolio = Portfolio.objects.get(user=user)
     stockExits = portfolio.stock_set.filter(ticker=ticker).exists()
     if stockExits:
         stockObj = portfolio.stock_set.get(ticker=ticker)
         obj.avgBuyPrice = stockObj.avgPrice
         obj.shares = stockObj.numShares
-    obj.fullName = prepResponse[0].get('companyName')
+   #obj.fullName = prepResponse[0].get('companyName')
     obj.ticker = ticker
-    obj.volume = numerize.numerize(prepResponse[0].get('volAvg'))
+   # obj.volume = numerize.numerize(prepResponse[0].get('volAvg'))
     obj.prevClose = response[ticker].get('closePrice')
     obj.prevClose = math.floor(obj.prevClose*100)/100
-    obj.description = prepResponse[0].get('description')
+    #obj.description = prepResponse[0].get('description')
     obj.PEratio = financials.get('peRatio')
     obj.PEGratio = financials.get('pegRatio')
     obj.PCFratio = financials.get('pcfRatio')
     obj.DEratio = financials.get('totalDebtToEquity')
-    obj.marketCap = numerize.numerize(marketCap)
+    #obj.marketCap = numerize.numerize(marketCap)
     obj.beta = financials.get('beta')
     obj.dividend = financials.get('dividendAmount')
     obj.eps = financials.get('epsTTM')

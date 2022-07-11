@@ -119,8 +119,10 @@ hr {
 }
 
 #quantity {
-  width: 100px;
-  height: 25px;
+  background-color: inherit;
+  border: none;
+  color: white;
+  text-align: right;
 }
 
 #buysell-tab {
@@ -135,4 +137,141 @@ hr {
 .positionInfo {
   font-size: 0.85rem !important;
   font-weight: 100 !important;
+}
+
+.newsDiv {
+  flex: 1 0 21%;
+  min-width: 350px;
+  min-height: 400px;
+  height: auto;
+  padding: 20px;
+}
+
+.boxDiv {
+  background-color: rgba(40, 40, 40, 0.75);
+  border-radius: 5px;
+  box-shadow: 7px 7px 8px hsl(0deg 0% 0% / 0.38);
+}
+.newsContent {
+  padding-top: 30px;
+}
+
+.image {
+  height: 5%;
+  width: 10%;
+  border-radius: 5px;
+  float: left;
+  margin-right: 20px;
+}
+
+.sourceTime {
+  font-size: 65%;
+  color: grey;
+}
+@media only screen and (max-width: 776px) {
+  .image {
+    height: 8%;
+    width: 17%;
+  }
+  #buysell-tab .tab-pane {
+    width: 100% !important;
+  }
+}
+
+.leftSide {
+  float: left;
+}
+
+.rightSide {
+  float: right;
+}
+
+#buysell-tab .tab-pane {
+  overflow: auto;
+  width: 50%;
+}
+
+#buysell-tab {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.align-right {
+  float: right;
+}
+
+.orderButton {
+  width: 100%;
+  border-radius: 10px;
+  background-color: rgba(8, 153, 129, 1);
+  color: white;
+}
+
+.orderButton:hover {
+  cursor: pointer;
+  border: 1px solid white;
+}
+
+.quantity {
+  display: inline-block;
+}
+
+.quantity .input-text.qty {
+  width: 35px;
+  height: 30px;
+  padding: 0 5px;
+  text-align: center;
+  background-color: transparent;
+  color: white;
+  border: none;
+}
+
+.quantity.buttons_added {
+  text-align: left;
+  position: relative;
+  white-space: nowrap;
+  vertical-align: top;
+}
+
+.quantity.buttons_added input {
+  display: inline-block;
+  margin: 0;
+  vertical-align: top;
+  box-shadow: none;
+}
+
+.quantity.buttons_added .minus,
+.quantity.buttons_added .plus {
+  padding: 7px 10px 8px;
+  height: 30px;
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+
+.quantity.buttons_added .minus {
+  border-right: 0;
+}
+
+.quantity.buttons_added .plus {
+  border-left: 0;
+}
+
+.quantity.buttons_added .minus:hover,
+.quantity.buttons_added .plus:hover {
+  background: #eeeeee;
+}
+
+.quantity input::-webkit-outer-spin-button,
+.quantity input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  margin: 0;
+}
+
+.quantity.buttons_added .minus:focus,
+.quantity.buttons_added .plus:focus {
+  outline: none;
 }
