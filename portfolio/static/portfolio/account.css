@@ -1,0 +1,94 @@
+#mainDiv {
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #ecc1bf;
+  color: #51557e;
+  height: 200px;
+}
+
+#accountInfo {
+  width: 50%;
+  float: left;
+  padding: 30px;
+}
+#doChartDiv {
+  width: 50%;
+  float: right;
+}
+
+.labelNum {
+  display: block;
+}
+
+.labelSpan {
+  display: block;
+  font-size: 13px;
+}
+
+#accountBal {
+  font-size: 25px;
+}
+
+#cash {
+  font-size: 15px;
+}
+
+#topDiv {
+  margin-bottom: 20px;
+}
+
+#doChart {
+  padding-top: 10px;
+}
+
+#container {
+  max-width: 750px;
+}
+
+.container .nav-link {
+  width: 100%;
+}
+
+#buysellSelect {
+  width: 100%;
+}
+
+.container .nav-link {
+  background-color: #7eb8f3 !important;
+  color: #51557e !important;
+  border-radius: 20px !important;
+  height: 50px !important;
+  line-height: 30px !important;
+}
+
+#left-item {
+  padding-right: 15px;
+}
+
+#right-item {
+  padding-left: 15px;
+}
+
+@media only screen and (max-width: 412px) {
+  #doChartDiv {
+    width: 40%;
+  }
+  #accountInfo {
+    width: 60%;
+  }
+}
+
+#transactions {
+  width: auto;
+  height: 500px;
+  background-color: #53629f;
+  margin-top: 25px !important;
+  margin-left: -15px;
+  margin-right: -15px;
+  border-radius: 30px;
+}
+
+.tab-content {
+  background-color: #605692 !important;
+}

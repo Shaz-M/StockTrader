@@ -86,42 +86,34 @@
         role="tabpanel"
         aria-labelledby="home-tab"
       >
-        <span class="buysell-title">Buy {{stockObj.ticker}}</span><br />
-        <small id="cashBal">${{cash}} available</small>
+        <div class="line-height">
+          <span class="buysell-title">Buy {{stockObj.ticker}}</span><br />
+          <small class="small-text" id="cashBal">${{cash}} available</small>
+        </div>
         <form id="buy-form" method="POST" action="">
           {% csrf_token %}
           <span class="buysell-section">
             <label for="quantity">Number of Shares</label>
-            <div class="quantity buttons_added">
-              <input type="button" value="-" class="minus" /><input
-                type="number"
-                step="1"
-                min="1"
-                max=""
-                name="quantity"
-                id="quantity"
-                value="1"
-                title="Qty"
-                class="input-text qty text"
-                size="4"
-                pattern=""
-                inputmode=""
-              /><input type="button" value="+" class="plus" />
-            </div>
+            <input
+              class="align-right quantity-input"
+              type="number"
+              min="0"
+              id="quantity"
+              name="quantity"
+              placeholder="0"
+            />
+
             <br />
             <input type="hidden" name="orderType" value="Buy" />
           </span>
-          <span class="buysell-section">
+          <span class="buysell-section pt-3 pb-3">
             Market Price<span class="currPrice align-right"></span>
           </span>
-          <br />
-          <span class="buysell-section">
-            Estimated Cost:<span id="tradeCost" class="align-right">$0.00</span>
+          <span class="buysell-section pt-3 pb-3 no-underline">
+            Estimated Cost:<span class="tradeCost align-right">$0.00</span>
           </span>
-          <br />
           <button class="orderButton" type="submit">Submit Order</button>
         </form>
-        Resulting Balance:<span id="resBal">${{cash}}</span>
       </div>
       <div
         class="tab-pane fade"
@@ -129,14 +121,33 @@
         role="tabpanel"
         aria-labelledby="profile-tab"
       >
-        Order Type: Market Order<br />
-        Trade Price: <span class="currPrice"></span><br />
+        <div class="line-height">
+          <span class="buysell-title">Sell {{stockObj.ticker}}</span><br />
+          <small class="small-text" id="cashBal">${{cash}} available</small>
+        </div>
         <form id="sell-form" method="POST" action="">
           {% csrf_token %}
-          <label for="quantity">Quantity:</label>
-          <input type="number" min="0" name="quantity" /><br />
-          <input type="hidden" name="orderType" value="Sell" />
-          <button type="submit">Submit Order</button>
+          <span class="buysell-section">
+            <label for="quantity">Number of Shares</label>
+            <input
+              class="align-right quantity-input"
+              type="number"
+              min="0"
+              id="sell-quantity"
+              name="quantity"
+              placeholder="0"
+            />
+
+            <br />
+            <input type="hidden" name="orderType" value="Sell" />
+          </span>
+          <span class="buysell-section pt-3 pb-3">
+            Market Price<span class="currPrice align-right"></span>
+          </span>
+          <span class="buysell-section pt-3 pb-3 no-underline">
+            Estimated Credit:<span class="tradeCost align-right">$0.00</span>
+          </span>
+          <button class="orderButton" type="submit">Submit Order</button>
         </form>
       </div>
     </div>

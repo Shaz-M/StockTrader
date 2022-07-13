@@ -1,0 +1,163 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<link rel="stylesheet" href="{% static 'portfolio/account.css' %}" />
+<link rel="stylesheet" href="{% static 'stocks/styles.css' %}" />
+<div id="container" class="container">
+  <div id="mainDiv">
+    <div id="accountInfo">
+      <span id="topDiv" class="labelNum">
+        <span class="labelSpan">Balance</span>
+        <span id="accountBal">${{accountBal}}</span>
+      </span>
+      <span class="labelNum">
+        <span class="labelSpan">Withdrawable Cash</span>
+        <span id="cash">${{cash}}</span>
+      </span>
+    </div>
+    <div id="doChartDiv">
+      <canvas id="doChart"></canvas>
+    </div>
+  </div>
+  <!-- Buy/Sell -->
+  <div class="infoDiv pt-2">
+    <ul class="nav nav-tabs" id="buysellSelect" role="tablist">
+      <li id="left-item" class="nav-item">
+        <a
+          class="nav-link buy"
+          id="buy-tab"
+          data-toggle="tab"
+          href="#buypanel"
+          role="tab"
+          aria-controls="home"
+          aria-selected="true"
+          >Deposit</a
+        >
+      </li>
+      <li id="right-item" class="nav-item">
+        <a
+          class="nav-link sell"
+          id="sell-tab"
+          data-toggle="tab"
+          href="#sellpanel"
+          role="tab"
+          aria-controls="profile"
+          aria-selected="false"
+          >Withdraw</a
+        >
+      </li>
+    </ul>
+    <div class="tab-content" id="buysell-tab">
+      <div
+        class="tab-pane fade"
+        id="buypanel"
+        role="tabpanel"
+        aria-labelledby="home-tab"
+      >
+        <form id="buy-form" method="POST" action="">
+          {% csrf_token %}
+          <span class="buysell-section">
+            <label for="quantity">Number of Shares</label>
+            <input
+              class="align-right quantity-input"
+              type="number"
+              min="0"
+              id="quantity"
+              name="quantity"
+              placeholder="0"
+            />
+
+            <br />
+            <input type="hidden" name="orderType" value="Buy" />
+          </span>
+          <span class="buysell-section pt-3 pb-3">
+            Market Price<span class="currPrice align-right"></span>
+          </span>
+          <span class="buysell-section pt-3 pb-3 no-underline">
+            Estimated Cost:<span class="tradeCost align-right">$0.00</span>
+          </span>
+          <button class="orderButton" type="submit">Submit Order</button>
+        </form>
+      </div>
+      <div
+        class="tab-pane fade"
+        id="sellpanel"
+        role="tabpanel"
+        aria-labelledby="profile-tab"
+      >
+        <div class="line-height">
+          <span class="buysell-title">Sell {{stockObj.ticker}}</span><br />
+          <small class="small-text" id="cashBal">${{cash}} available</small>
+        </div>
+        <form id="sell-form" method="POST" action="">
+          {% csrf_token %}
+          <span class="buysell-section">
+            <label for="quantity">Number of Shares</label>
+            <input
+              class="align-right quantity-input"
+              type="number"
+              min="0"
+              id="sell-quantity"
+              name="quantity"
+              placeholder="0"
+            />
+
+            <br />
+            <input type="hidden" name="orderType" value="Sell" />
+          </span>
+          <span class="buysell-section pt-3 pb-3">
+            Market Price<span class="currPrice align-right"></span>
+          </span>
+          <span class="buysell-section pt-3 pb-3 no-underline">
+            Estimated Credit:<span class="tradeCost align-right">$0.00</span>
+          </span>
+          <button class="orderButton" type="submit">Submit Order</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Buy/Sell END -->
+  <div id="transactions">
+    <span>Transaction History</span>
+  </div>
+</div>
+<script src="{% static 'portfolio/Chart.min.js' %}"></script>
+<script src="{% static 'portfolio/center-text-plugin.js' %}"></script>
+<script language="JavaScript">
+  //create chart
+  var doughnut = document.getElementById("doChart");
+  var myDoughnutChart = new Chart(doughnut, {
+    type: "doughnut",
+    data: {
+      labels: {{doChartLabels|safe}},
+      datasets: [
+        {
+          label: "My First dataset",
+          data: {{doChartData|safe}},
+          backgroundColor:['white','black'],
+          borderColor:['white','black'],
+        },
+      ],
+    },
+    options: {
+      elements: {
+        center: {
+          text: '$',
+          color: 'white', // Default is #000000
+          fontStyle: "DM Sans",
+          sidePadding: 20, // Default is 20 (as a percentage)
+          maxFontSize: 23, // Default is 20 (in px), set to false and text will not wrap.
+          lineHeight: 25 // Default is 25 (in px), used for when text wraps
+      }
+    },
+      maintainAspectRatio: false,
+      responsive:true,
+      cutoutPercentage: 90,
+              legend: {
+                  display:false,
+                  position: 'bottom'
+              },
+
+    },
+  });
+</script>
+{% endblock content %}

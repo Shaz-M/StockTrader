@@ -114,3 +114,13 @@ def getNewsTicker(ticker):
         obj.dateTime = articles[i].get('publishedAt')
         newsArr.append(obj)
     return newsArr
+
+def getAccountBal(user):
+    portfolio = Portfolio.objects.get(user=user)
+    stocks = portfolio.stock_set.all()
+    totalValue = 0
+    for stock in stocks:
+        price,change = getPriceChange(stock.ticker)
+        totalValue+=price*stock.numShares
+    totalValue+=portfolio.cashBalance
+    return totalValue

@@ -3,10 +3,10 @@ from webbrowser import get
 from django.shortcuts import redirect, render
 from .forms import TickerForm
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Portfolio
+from .models import Portfolio, accountBal
 from stocks.utils import validateTicker
 from django.contrib.auth.decorators import login_required
-from .utils import topGainers,topLosers,getNews,getDoChartData
+from .utils import topGainers,topLosers,getNews,getDoChartData,getAccountBal
 import json
 
 # Create your views here.
@@ -51,6 +51,17 @@ def positions(request):
     cash = portfolio.cashBalance
     context = {'stocks':stocks, 'cash':cash}
     return render(request,'portfolio/positions.html',context)
+
+@login_required
+def account(request):
+    user = request.user
+    portfolio = Portfolio.objects.get(user=user)
+    cash = portfolio.cashBalance
+    accountBal = 1000000#getAccountBal(user)
+    doChartLabels = ['cash','']
+    doChartData = [75,25]
+    context = {'cash':cash,'accountBal':accountBal,'doChartLabels':doChartLabels,'doChartData':doChartData}
+    return render(request,'portfolio/account.html',context)
 
 def navsearch(request):
         if 'q' in request.GET and request.GET['q']:

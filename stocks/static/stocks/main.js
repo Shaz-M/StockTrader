@@ -1,10 +1,11 @@
 const selectElement = document.querySelector('#quantity');
+const sellQuantity = document.querySelector('#sell-quantity');
+
 let cash = parseFloat($("#cashBal").text().substring(1));
 
 
 selectElement.addEventListener('input', inputEvent);
-selectElement.addEventListener('change',inputEvent);
-
+sellQuantity.addEventListener('input',inputEvent);
 
 function inputEvent(){
     let shares = parseInt(event.target.value);
@@ -19,36 +20,16 @@ function inputEvent(){
     let resBal = cash-cost;
     resBal = resBal.toFixed(2);
     if(cost==0){cost="0.00";}
-    $("#tradeCost").text("$"+cost);
+    $(".tradeCost").text(function(){
+        return "$"+cost
+    });
     $('#resBal').text('$'+resBal);
 }
 
-function wcqib_refresh_quantity_increments() {
-    jQuery("div.quantity:not(.buttons_added), td.quantity:not(.buttons_added)").each(function(a, b) {
-        var c = jQuery(b);
-        c.addClass("buttons_added"), c.children().first().before('<input type="button" value="-" class="minus" />'), c.children().last().after('<input type="button" value="+" class="plus" />')
-    })
-}
-String.prototype.getDecimals || (String.prototype.getDecimals = function() {
-    var a = this,
-        b = ("" + a).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
-    return b ? Math.max(0, (b[1] ? b[1].length : 0) - (b[2] ? +b[2] : 0)) : 0
-}), jQuery(document).ready(function() {
-    wcqib_refresh_quantity_increments()
-}), jQuery(document).on("updated_wc_div", function() {
-    wcqib_refresh_quantity_increments()
-}), jQuery(document).on("click", ".plus, .minus", function() {
-    var a = jQuery(this).closest(".quantity").find(".qty"),
-        b = parseFloat(a.val()),
-        c = parseFloat(a.attr("max")),
-        d = parseFloat(a.attr("min")),
-        e = a.attr("step");
-    b && "" !== b && "NaN" !== b || (b = 0), "" !== c && "NaN" !== c || (c = ""), "" !== d && "NaN" !== d || (d = 0), "any" !== e && "" !== e && void 0 !== e && "NaN" !== parseFloat(e) || (e = 1), jQuery(this).is(".plus") ? c && b >= c ? a.val(c) : a.val((b + parseFloat(e)).toFixed(e.getDecimals())) : d && b <= d ? a.val(d) : b > 0 && a.val((b - parseFloat(e)).toFixed(e.getDecimals())), a.trigger("change")
-});
 
-let shares =  parseInt($("#shares").text())
+let shares =  parseInt($("#shares").text());
 let avgPrice = parseFloat($("#avgPrice").text().substring(1));
-function fetchdata(ticker){
+function fetchdata(ticker,prevPrice){
     $.ajax({
     url: 'https://api.tdameritrade.com/v1/marketdata/'+ticker+'/quotes?apikey=D57TGYGPEEXE5IQRTHZG4EVDBATABE3B',
     type: 'get',
@@ -71,6 +52,7 @@ function fetchdata(ticker){
 
 
         plOpen = plOpen.toFixed(2);
+        plDay = plDay.toFixed(2);
         netLiq = netLiq.toFixed(2);
         high = high.toFixed(2);
         low = low.toFixed(2);
@@ -79,6 +61,8 @@ function fetchdata(ticker){
         percent = percent.toFixed(2);
         askPrice = askPrice.toFixed(2);
         bidPrice = bidPrice.toFixed(2);
+        price = price.toFixed(2);
+        change = change.toFixed(2);
 
         
         if(change>0){
@@ -89,7 +73,7 @@ function fetchdata(ticker){
             $("#plDay").text("$"+plDay);
         }
         else if(change<0){
-            let string = '-$'+change+' (-'+percent+'%)';
+            let string = '-$'+Math.abs(change)+' (-'+Math.abs(percent)+'%)';
             $("#change").text(string);
             $(".priceDiv").css("color","#f1272e");
             $("#plDay").css("color","#f1272e");
@@ -105,6 +89,20 @@ function fetchdata(ticker){
         $(".currPrice").each(function(){
             $(this).text("$"+price);
         });
+
+        //dynamic price color change based on prev price
+        if(prevPrice != 0){
+            if(price>prevPrice){
+                $('#price').css('color','rgba(8, 153, 129, 1)');
+            }
+            else if(price<prevPrice){
+                $('#price').css('color','#f1272e');
+            }
+            else{
+                $('#price').css('color','white');
+            }
+        }
+        prevPrice = price;
         $("#bidPrice").text("$"+bidPrice);
         $("#askPrice").text("$"+askPrice);
         $("#low").text("$"+low);
@@ -128,13 +126,25 @@ function fetchdata(ticker){
         }
     },
     complete:function(data){
-        setTimeout(fetchdata,5000,ticker);
+        setTimeout(fetchdata,5000,ticker,prevPrice);
     }
     });
     }
 
 $(document).ready(function(){
+    let dt = new Date();
+    let hour = dt.getHours();
+    let minute = dt.getMinutes();
+    if(hour >= 15 || (hour<8 && minute<30)){
+        $('#buy-tab').css('pointer-events','none');
+        $('#buy-tab').css('background-color','rgba(8, 153, 129, 0.5)');
+        $('#buy-tab').css('color','grey');
+        $('#sell-tab').css('pointer-events','none');
+        $('#sell-tab').css('background-color','rgba(241, 39, 46, 0.5)');
+        $('#sell-tab').css('color','grey');
+    }
+
     let ticker = $('#ticker').text();
     ticker = ticker.toUpperCase();
-    fetchdata(ticker);
+    fetchdata(ticker,0);
 });

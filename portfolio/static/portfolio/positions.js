@@ -8,13 +8,14 @@ let netLiqArr = $(".netLiq");
 let percentArr = $(".percentReturn");
 let cash = parseFloat($("#cashBal").text());
 
-function fetchdata(stocks){
+function fetchdata(stocks,prevVals){
     let sumPlOpen = 0;
     let sumPlDay = 0;
     let sumNetLiq = 0;
     // for each stock in the portfolio add the dyanmic data
     // overall sums are summed during each iteration
     for(let i = 0; i<stocks.length; i++){
+        let prevPrice = prevVals[i];
         let ticker = stocks[i].innerText;
         let shares = parseInt(sharesArr[i].innerText);
         let markDom = markArr[i];
@@ -41,6 +42,8 @@ function fetchdata(stocks){
 
             plDay = plDay.toFixed(2);
             plOpen = plOpen.toFixed(2);
+            price = price.toFixed(2);
+            price = parseFloat(price);
             plOpen = parseFloat(plOpen);
             plDay = parseFloat(plDay);
             let pl = [plOpen,plDay];
@@ -94,6 +97,21 @@ function fetchdata(stocks){
             markDom.innerText = price;
             netLiqDom.innerText = "$"+netLiq;
             percentDom.innerText = percentPL+"%";
+
+            //mark dynamic price color change
+            if(prevPrice != 0){
+                if(price>prevPrice){
+                    markDom.style.color = 'rgba(8, 153, 129, 1)';
+                }
+                else if(price<prevPrice){
+                    markDom.style.color ='#f1272e';
+                }
+                else{
+                    markDom.style.color ='white';
+                }
+            }
+            prevVals[i] = price;
+            
         },
         });
     }
@@ -149,9 +167,10 @@ function fetchdata(stocks){
     $("#NetLiqCash").css("color","rgba(8, 153, 129, 1)");
     $("#NetLiqCash").text("$"+netLiqCash);
     //repeat function every interval
-    setTimeout(fetchdata,5000,stocks);
+    setTimeout(fetchdata,5000,stocks,prevVals);
 }
 
 $(document).ready(function(){
-    fetchdata(stocks);
+    let prevVals = new Array(stocks.length); for (let i=0; i<prevVals.length; ++i) prevVals[i] = 0;
+    fetchdata(stocks,prevVals);
 });

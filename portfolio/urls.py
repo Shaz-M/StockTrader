@@ -7,5 +7,6 @@ urlpatterns = [
     path('',views.dashboard,name="dashboard"),
     path('positions/',views.positions,name='positions'),
     path('stocks/<str:tid>',tickerView.ticker,name='ticker'),
-    path('search',views.navsearch,name='search')
+    path('search',views.navsearch,name='search'),
+    path('account/',views.account,name='account')
 ]
