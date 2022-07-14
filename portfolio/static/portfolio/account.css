@@ -81,8 +81,9 @@
 
 #transactions {
   width: auto;
-  height: 500px;
-  background-color: #53629f;
+  height: auto;
+  min-height: 200px;
+  background-color: #051658;
   margin-top: 25px !important;
   margin-left: -15px;
   margin-right: -15px;
@@ -90,5 +91,124 @@
 }
 
 .tab-content {
-  background-color: #605692 !important;
+  background-color: #ecc1bf !important;
+}
+
+.labl {
+  flex: 1;
+  display: inline-block;
+  width: auto;
+}
+.labl > input {
+  /* HIDE RADIO */
+  visibility: hidden; /* Makes input not-clickable */
+  position: absolute; /* Remove input from document flow */
+}
+.labl > input + div {
+  /* DIV STYLES */
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+.labl > input:checked + div {
+  /* (RADIO CHECKED) DIV STYLES */
+  background-color: #ffd6bb;
+  border: 1px solid #ff6600;
+}
+
+.radio-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.bank-logo {
+  max-width: 75%;
+  max-height: 75%;
+}
+
+.bank-logoDiv {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #51557e;
+  border-radius: 10px;
+}
+
+#boa-logo {
+  max-width: 90%;
+  max-height: 90%;
+}
+@media only screen and (max-width: 776px) {
+  #buysell-tab .pane-width {
+    width: 70% !important;
+  }
+}
+
+@media only screen and (max-width: 425px) {
+  #buysell-tab .pane-width {
+    width: 100% !important;
+  }
+}
+
+.orderButton {
+  background-color: #7eb8f3;
+  color: #51557e;
+}
+
+.tab-content {
+  border-radius: 10px;
+  color: #51557e;
+}
+
+.padding-around {
+  padding: 30px;
+}
+
+#transTitle {
+  font-size: 19px;
+  font-weight: lighter;
+}
+
+.transhist-logo {
+  width: 55px;
+  height: 55px;
+  margin: 0;
+}
+
+.trans-image {
+  max-width: 60% !important;
+  max-height: 60% !important;
+}
+
+.trans-section {
+  display: flex;
+  padding-top: 20px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.397);
+  padding-bottom: 20px;
+}
+
+.bank-date {
+  padding-left: 20px;
+  align-items: center;
+}
+
+.bank-name {
+}
+
+.trans-date {
+  font-size: small;
+  color: grey;
+}
+
+.center-content {
+  padding-top: 8px;
+  line-height: 1.2em;
+}
+
+.dw-amount {
+  margin-left: auto;
+  padding-top: 8px;
+  line-height: 1.2em;
 }

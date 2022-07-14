@@ -1,6 +1,7 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
-<link rel="stylesheet" href="{% static 'portfolio/account.css' %}" />
 <link rel="stylesheet" href="{% static 'stocks/styles.css' %}" />
+<link rel="stylesheet" href="{% static 'portfolio/account.css' %}" />
+
 <div id="container" class="container">
   <div id="mainDiv">
     <div id="accountInfo">
@@ -47,7 +48,7 @@
     </ul>
     <div class="tab-content" id="buysell-tab">
       <div
-        class="tab-pane fade"
+        class="tab-pane fade pane-width"
         id="buypanel"
         role="tabpanel"
         aria-labelledby="home-tab"
@@ -55,26 +56,72 @@
         <form id="buy-form" method="POST" action="">
           {% csrf_token %}
           <span class="buysell-section">
-            <label for="quantity">Number of Shares</label>
+            <div class="radio-buttons">
+              <label class="labl">
+                <input type="radio" name="radioname" value="Bank of America" />
+                <div class="bank-logoDiv">
+                  <img
+                    class="bank-logo"
+                    id="boa-logo"
+                    src="{% static 'portfolio/images/Bank of America.png' %}"
+                    alt=""
+                  />
+                </div>
+              </label>
+              <label class="labl">
+                <input type="radio" name="radioname" value="Chase Bank" />
+                <div class="bank-logoDiv">
+                  <img
+                    class="bank-logo"
+                    src="{% static 'portfolio/images/Chase Bank.png' %}"
+                    alt=""
+                  />
+                </div>
+              </label>
+              <label class="labl">
+                <input type="radio" name="radioname" value="Wells Fargo" />
+                <div class="bank-logoDiv">
+                  <img
+                    class="bank-logo"
+                    src="{% static 'portfolio/images/Wells Fargo.png' %}"
+                    alt=""
+                  />
+                </div>
+              </label>
+              <label class="labl">
+                <input type="radio" name="radioname" value="Citi Bank" />
+                <div class="bank-logoDiv">
+                  <img
+                    class="bank-logo"
+                    src="{% static 'portfolio/images/Citi Bank.png' %}"
+                    alt=""
+                  />
+                </div>
+              </label>
+            </div>
+            <label for="quantity">Deposit Amount</label>
             <input
               class="align-right quantity-input"
               type="number"
               min="0"
-              id="quantity"
-              name="quantity"
+              id="deposit"
+              name="deposit"
               placeholder="0"
             />
 
             <br />
-            <input type="hidden" name="orderType" value="Buy" />
-          </span>
-          <span class="buysell-section pt-3 pb-3">
-            Market Price<span class="currPrice align-right"></span>
+            <input type="hidden" name="orderType" value="deposit" />
           </span>
           <span class="buysell-section pt-3 pb-3 no-underline">
-            Estimated Cost:<span class="tradeCost align-right">$0.00</span>
+            Estimated Account Balance<span
+              id="depositBal"
+              class="tradeCost align-right"
+              >${{accountBal}}</span
+            >
           </span>
-          <button class="orderButton" type="submit">Submit Order</button>
+          <button id="deposit-button" class="orderButton" type="submit">
+            Submit Deposit
+          </button>
         </form>
       </div>
       <div
@@ -83,47 +130,114 @@
         role="tabpanel"
         aria-labelledby="profile-tab"
       >
-        <div class="line-height">
-          <span class="buysell-title">Sell {{stockObj.ticker}}</span><br />
-          <small class="small-text" id="cashBal">${{cash}} available</small>
-        </div>
         <form id="sell-form" method="POST" action="">
           {% csrf_token %}
           <span class="buysell-section">
-            <label for="quantity">Number of Shares</label>
+            <div class="radio-buttons">
+              <label class="labl">
+                <input type="radio" name="radioname" value="Bank of America" />
+                <div class="bank-logoDiv">
+                  <img
+                    class="bank-logo"
+                    id="boa-logo"
+                    src="{% static 'portfolio/images/Bank of America.png' %}"
+                    alt=""
+                  />
+                </div>
+              </label>
+              <label class="labl">
+                <input type="radio" name="radioname" value="Chase Bank" />
+                <div class="bank-logoDiv">
+                  <img
+                    class="bank-logo"
+                    src="{% static 'portfolio/images/Chase Bank.png' %}"
+                    alt=""
+                  />
+                </div>
+              </label>
+              <label class="labl">
+                <input type="radio" name="radioname" value="Wells Fargo" />
+                <div class="bank-logoDiv">
+                  <img
+                    class="bank-logo"
+                    src="{% static 'portfolio/images/Wells Fargo.png' %}"
+                    alt=""
+                  />
+                </div>
+              </label>
+              <label class="labl">
+                <input type="radio" name="radioname" value="Citi Bank" />
+                <div class="bank-logoDiv">
+                  <img
+                    class="bank-logo"
+                    src="{% static 'portfolio/images/Citi Bank.png' %}"
+                    alt=""
+                  />
+                </div>
+              </label>
+            </div>
+            <label for="withdraw">Withdraw Amount</label>
             <input
               class="align-right quantity-input"
               type="number"
               min="0"
-              id="sell-quantity"
-              name="quantity"
+              id="withdraw"
+              name="withdraw"
               placeholder="0"
             />
 
             <br />
-            <input type="hidden" name="orderType" value="Sell" />
-          </span>
-          <span class="buysell-section pt-3 pb-3">
-            Market Price<span class="currPrice align-right"></span>
+            <input type="hidden" name="orderType" value="withdraw" />
           </span>
           <span class="buysell-section pt-3 pb-3 no-underline">
-            Estimated Credit:<span class="tradeCost align-right">$0.00</span>
+            Estimated Account Balance<span
+              id="withdrawBal"
+              class="tradeCost align-right"
+              >${{accountBal}}</span
+            >
           </span>
-          <button class="orderButton" type="submit">Submit Order</button>
+          <button id="sell-button" class="orderButton" type="submit">
+            Submit Withdraw
+          </button>
         </form>
       </div>
     </div>
   </div>
-
   <!-- Buy/Sell END -->
+  {% load mathfilters %}
   <div id="transactions">
-    <span>Transaction History</span>
+    <div class="padding-around">
+      <span id="transTitle">Transaction History</span>
+      {% for transaction in transactions %}
+      <div class="trans-section">
+        <div class="bank-logoDiv transhist-logo">
+          <img
+            class="bank-logo trans-img"
+            src="{% static 'portfolio/images/'|add:transaction.bank|add:'.png' %}"
+            alt=""
+          />
+        </div>
+        <div class="bank-date">
+          <div class="center-content">
+            <span class="bank-name">{{transaction.bank}}</span>
+            <br />
+            <span class="trans-date">{{transaction.date}}</span>
+          </div>
+        </div>
+        <div class="dw-amount">
+          {% if transaction.change < 0 %} -${{ transaction.change|abs }}
+          {%else%} +${{transaction.change}} {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
   </div>
 </div>
 <script src="{% static 'portfolio/Chart.min.js' %}"></script>
 <script src="{% static 'portfolio/center-text-plugin.js' %}"></script>
 <script language="JavaScript">
   //create chart
+  console.log({{doChartData|safe}})
   var doughnut = document.getElementById("doChart");
   var myDoughnutChart = new Chart(doughnut, {
     type: "doughnut",
@@ -160,4 +274,5 @@
     },
   });
 </script>
+<script src="{% static 'portfolio/account.js' %}"></script>
 {% endblock content %}

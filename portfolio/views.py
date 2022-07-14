@@ -3,10 +3,12 @@ from webbrowser import get
 from django.shortcuts import redirect, render
 from .forms import TickerForm
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Portfolio, accountBal
+from .models import Portfolio, accountBal, transactionHist
 from stocks.utils import validateTicker
 from django.contrib.auth.decorators import login_required
 from .utils import topGainers,topLosers,getNews,getDoChartData,getAccountBal
+from decimal import Decimal
+from django.contrib import messages
 import json
 
 # Create your views here.
@@ -56,11 +58,40 @@ def positions(request):
 def account(request):
     user = request.user
     portfolio = Portfolio.objects.get(user=user)
-    cash = portfolio.cashBalance
-    accountBal = 1000000#getAccountBal(user)
-    doChartLabels = ['cash','']
-    doChartData = [75,25]
-    context = {'cash':cash,'accountBal':accountBal,'doChartLabels':doChartLabels,'doChartData':doChartData}
+    if(request.method == 'POST'):
+        orderType = request.POST['orderType']
+        bank = request.POST['radioname']
+        amount = 0
+        if(orderType == 'deposit'):
+            amount = Decimal(request.POST['deposit'])
+            portfolio.initialBalance+=amount
+            portfolio.cashBalance+=amount
+        else:
+            amount = Decimal(request.POST['withdraw'])
+            portfolio.initialBalance-=amount
+            portfolio.cashBalance-=amount
+            if(portfolio.cashBalance<0):
+                messages.warning(request,f'Withdrawl amount greater than cash balance')
+                return redirect('portfolio:account')
+            amount = amount*-1
+        newModel = transactionHist(bank=bank,change=amount,portfolio=portfolio)
+        newModel.save()
+        portfolio.save()
+        return redirect('portfolio:account')
+    cash = str(portfolio.cashBalance)
+    balance = getAccountBal(user)
+    accountBal = str(balance)
+    remaining = str(balance-portfolio.cashBalance)
+    doChartLabels = ['cash','r']
+    doChartData = [cash,remaining]
+    transactions = portfolio.transactionhist_set.all()
+    context = {
+        'cash':cash,
+        'accountBal':accountBal,
+        'doChartLabels':doChartLabels,
+        'doChartData':doChartData,
+        'transactions':transactions
+        }
     return render(request,'portfolio/account.html',context)
 
 def navsearch(request):

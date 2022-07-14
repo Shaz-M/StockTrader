@@ -19,3 +19,13 @@ class accountBal(models.Model):
 
     def __str__(self):
         return self.portfolio.user.username
+
+
+class transactionHist(models.Model):
+    date = models.DateField(default=datetime.now)
+    bank = models.CharField(max_length=10,default='Default Bank')
+    change = models.IntegerField(default=0)
+    portfolio = models.ForeignKey(Portfolio,on_delete=models.CASCADE,null=True)
+
+    def __str__(self):
+        return self.bank

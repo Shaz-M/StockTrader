@@ -79,7 +79,7 @@ def getStockObj(ticker,user):
         obj.shares = stockObj.numShares
    #obj.fullName = prepResponse[0].get('companyName')
     obj.ticker = ticker
-   # obj.volume = numerize.numerize(prepResponse[0].get('volAvg'))
+   #obj.volume = numerize.numerize(prepResponse[0].get('volAvg'))
     obj.prevClose = response[ticker].get('closePrice')
     obj.prevClose = math.floor(obj.prevClose*100)/100
     #obj.description = prepResponse[0].get('description')
