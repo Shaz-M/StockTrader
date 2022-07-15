@@ -3,3 +3,13 @@ body {
   font-family: "DM Sans", sans-serif;
   color: white;
 }
+
+#search-bar {
+  width: 400px;
+}
+
+@media only screen and (max-width: 989px) {
+  #search-bar {
+    width: 100%;
+  }
+}

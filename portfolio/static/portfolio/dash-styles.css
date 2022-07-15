@@ -145,3 +145,10 @@ tr[data-href]:hover {
 .priceInfo {
   font-size: small;
 }
+.return {
+  font-size: large;
+}
+
+.price-title {
+  color: rgb(158, 154, 154);
+}

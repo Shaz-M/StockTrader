@@ -51,7 +51,7 @@ def positions(request):
     portfolio = Portfolio.objects.get(user=user)
     stocks = portfolio.stock_set.all()
     cash = portfolio.cashBalance
-    context = {'stocks':stocks, 'cash':cash}
+    context = {'title':'Positions','stocks':stocks, 'cash':cash}
     return render(request,'portfolio/positions.html',context)
 
 @login_required
@@ -86,6 +86,7 @@ def account(request):
     doChartData = [cash,remaining]
     transactions = portfolio.transactionhist_set.all()
     context = {
+        'title':'Account',
         'cash':cash,
         'accountBal':accountBal,
         'doChartLabels':doChartLabels,

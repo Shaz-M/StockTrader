@@ -1,5 +1,9 @@
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% block content %}
-<div class="container">
+{%load static%}
+<link rel="stylesheet" href="{% static 'portfolio/account.css' %}" />
+<link rel="stylesheet" href="{% static 'users/styles.css' %}" />
+
+<div class="container" id="mainDiv">
   <form method="POST">
     {% csrf_token %}
     <fieldset class="form-group">

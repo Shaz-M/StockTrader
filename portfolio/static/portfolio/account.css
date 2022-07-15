@@ -82,7 +82,6 @@
 #transactions {
   width: auto;
   height: auto;
-  min-height: 200px;
   background-color: #051658;
   margin-top: 25px !important;
   margin-left: -15px;
@@ -192,9 +191,6 @@
 .bank-date {
   padding-left: 20px;
   align-items: center;
-}
-
-.bank-name {
 }
 
 .trans-date {

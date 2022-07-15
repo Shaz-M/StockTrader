@@ -53,6 +53,6 @@ def ticker(request,tid):
     cash = portfolio.cashBalance
     stockObj = getStockObj(tid,user)
     newsObj = getNewsTicker(tid)
-    context = {'stockObj':stockObj,'newsObj':newsObj,'ticker':tid,'cash':cash}
+    context = {'title':tid,'stockObj':stockObj,'newsObj':newsObj,'ticker':tid,'cash':cash}
     return render(request,'stocks/ticker.html',context)
 

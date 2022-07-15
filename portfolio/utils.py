@@ -65,7 +65,12 @@ def getNews():
         obj.url = articles[i].get('url')
         obj.imageUrl = articles[i].get('urlToImage')
         obj.title = articles[i].get('title').split('-',1)[0]
-        obj.dateTime = articles[i].get('publishedAt')
+        datetime = articles[i].get('publishedAt')
+        datetime = datetime.split('T')
+        date = datetime[0]
+        time = datetime[1]
+        time = time[:-1]
+        obj.dateTime = date+' '+time
         newsArr.append(obj)
     return newsArr
 
@@ -95,7 +100,7 @@ def getPriceChange(ticker):
     response = requests.get(url)
     response = response.json()
     price = round(Decimal(response[ticker].get('regularMarketLastPrice')),2)
-    change = round(Decimal(response[ticker].get('netChange')),2)
+    change = round(Decimal(response[ticker].get('regularMarketNetChange')),2)
     return price,change
 
 def getNewsTicker(ticker):
@@ -111,7 +116,12 @@ def getNewsTicker(ticker):
         obj.url = articles[i].get('url')
         obj.imageUrl = articles[i].get('urlToImage')
         obj.title = articles[i].get('title').split('-',1)[0]
-        obj.dateTime = articles[i].get('publishedAt')
+        datetime = articles[i].get('publishedAt')
+        datetime = datetime.split('T')
+        date = datetime[0]
+        time = datetime[1]
+        time = time[:-1]
+        obj.dateTime = date+' '+time
         newsArr.append(obj)
     return newsArr
 

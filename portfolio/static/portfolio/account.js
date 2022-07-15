@@ -74,3 +74,4 @@ $(document).ready(function(){
     $("#sell-button").attr("disabled", "disabled");
     $("#sell-button").css('background-color','grey');
 });
+

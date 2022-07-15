@@ -204,7 +204,7 @@
     </div>
   </div>
   <!-- Buy/Sell END -->
-  {% load mathfilters %}
+  {% load mathfilters %} {% if transactions %}
   <div id="transactions">
     <div class="padding-around">
       <span id="transTitle">Transaction History</span>
@@ -232,6 +232,7 @@
       {% endfor %}
     </div>
   </div>
+  {% endif %}
 </div>
 <script src="{% static 'portfolio/Chart.min.js' %}"></script>
 <script src="{% static 'portfolio/center-text-plugin.js' %}"></script>
